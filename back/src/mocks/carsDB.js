@@ -180,3 +180,5 @@ let carsDB = [
       foto: "https://platform.cstatic-images.com/large/in/v2/stock_photos/90884105-7fd5-4da9-8479-27e482a4e479/2b678835-3279-4de7-8047-36484d4e2900.png"      
     }    
 ]    
+
+module.exports = carsDB;

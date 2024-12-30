@@ -23,7 +23,7 @@ const carsSchema = new Schema({
         required: true
     },
     foto: {
-        type: URL,
+        type: String,
         required: true
     }
 });
