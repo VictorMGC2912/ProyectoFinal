@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const carsRouter = require('./routes/carsRoutes');
 
 
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(cors());
 
 //RUTAS
+app.use("/cars", carsRouter)
 
 
 //ESCUCHA DEL PUERTO
