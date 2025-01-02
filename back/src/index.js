@@ -3,10 +3,17 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const carsRouter = require('./routes/carsRoutes');
 const userRouter = require("./routes/userRoutes");
-
-
-const app = express();
 const port = 9000;
+
+//Así inicializamos express y podemos acceder a todas las funcionalidades que nos proporciona
+const app = express();
+//Así inicializamos express y podemos acceder a todas las funcionalidades que nos proporciona
+app.use(express.json());
+// Esto nos permite obtener la información de configuración de ".env"
+require("dotenv").config();
+
+app.use(cors());
+
 
 //CONEXION CON MONGO
 const url_mongo = 'mongodb+srv://victor8913:Q76N1C5v3BDGtwKK@cluster0.5fe8c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -25,8 +32,6 @@ db.on("disconected", () => {
     console.log(`Mongo is disconected`)
 });
 
-app.use(express.json());
-app.use(cors());
 
 //RUTAS
 app.use("/cars", carsRouter);
