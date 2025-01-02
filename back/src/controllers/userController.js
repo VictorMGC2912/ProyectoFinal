@@ -16,11 +16,20 @@ const addUser = async (req, res) => {
 
     res.status(200).json({ status: "succeeded", data: user });
   } catch (error) {
-    res.status(400).json({
+
+    if(error.code === 11000){
+      return res.status(200).json({
+        status: "failed",
+        message: "El email ya existe",
+        
+      });
+    }
+    res.status(200).json({
       status: "failed",
       message: "No se pudo crear el usuario",
-      error: error.message,
+      
     });
+    
   }
 };
 
