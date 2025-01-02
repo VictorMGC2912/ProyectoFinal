@@ -47,6 +47,7 @@ const login = async (req, res) => {
       const validPassword = await bcrypt.compare(password, user.password);
       if(validPassword) {
         //ToDo: GENERAR TOKEN
+        //Payload para pasar al generador de token que es una funcion que nos traemos de utils
         const payload = {
           userId: user._id,
           name: user.name,
@@ -54,26 +55,6 @@ const login = async (req, res) => {
         };
         const token = generateToken(payload, false);
         const token_refresh = generateToken(payload, true);
-
-        // const token = jwt.sign(
-        //   { 
-        //     userId:user._id,
-        //     name:user.name,
-        //     email: user.email
-        //   },
-        //   process.env.TOKEN_SECRET,
-        //   { expiresIn: "15min" }
-        // );
-
-        // const token_refresh = jwt.sign(
-        //   {
-        //     userId:user._id,
-        //     name:user.name,
-        //     email: user.email
-        //   },
-        //   process.env.TOKEN_SECRET_REFRESH,
-        //   { expiresIn: "60min" }
-        // )
 
         return res.status(200).json({status: "succeeded", data: user, token: token, token_refresh: token_refresh});
       } else {
