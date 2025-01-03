@@ -16,8 +16,7 @@ app.use(cors());
 
 
 //CONEXION CON MONGO
-const url_mongo = 'mongodb+srv://victor8913:Q76N1C5v3BDGtwKK@cluster0.5fe8c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-
+const url_mongo = process.env.DATABASE_URL_DEV
 mongoose.connect(url_mongo);
 
 const db = mongoose.connection;

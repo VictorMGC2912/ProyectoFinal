@@ -1,5 +1,6 @@
 const carsDB = require("../mocks/carsDB");
 const carModel = require("../models/CarsModel");
+const verifyToken = require("../middleware/auth");
 
 
 //MOSTRAR TODOS LOS COCHES
