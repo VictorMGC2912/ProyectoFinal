@@ -15,7 +15,8 @@ const getCars = async (req, res) => {
                 anio: car.anio,
                 descripcion: car.descripcion,
                 precio: car.precio,
-                foto: car.foto
+                foto: car.foto,
+                fav: car.fav
             }
         });
         res.status(200).json({
@@ -45,6 +46,19 @@ const getCarById = async (req, res) => {
         res
         .status(500)
         .json({status: "failed", data: null, error: error.message})
+    }
+}
+
+const getFavCarByUserId = async (req, res) => {
+    try{
+        const userId = req.user.userId;
+        const cars = await carModel.find({fav: userId}).populate("fav");
+        console.log(cars);
+        res.status(200).json(cars);
+    }catch(error){
+        res
+        .status(500)
+        .json({message: "Error al agregar a favoritos", error: error.message});
     }
 }
 
@@ -156,6 +170,7 @@ module.exports = {
     loadData,
     getCars,
     getCarById,
+    getFavCarByUserId,
     createCar,
     updateCar,
     deleteCar
