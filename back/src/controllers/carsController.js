@@ -1,5 +1,6 @@
 const carsDB = require("../mocks/carsDB");
 const carModel = require("../models/CarsModel");
+const userModel = require("../models/UserModel");
 const verifyToken = require("../middleware/auth");
 
 
@@ -51,9 +52,9 @@ const getCarById = async (req, res) => {
 
 const getFavCarByUserId = async (req, res) => {
     try{
-        const userId = req.user.userId;
-        const cars = await carModel.find({fav: userId}).populate("fav");
-        console.log(cars);
+        const userId = req.user.userId;//OBTENEMOS EL ID DEL HEADER QUE VIENE DEL FRONTEND
+        const cars = await carModel.find({fav: userId}).populate("fav");//CONSULTAMOS DEL CAMPO FAV SI COINCIDE CON EL ID DEL USUARIO QUE NOS VIENE DEL HEADER
+        
         res.status(200).json(cars);
     }catch(error){
         res
@@ -71,7 +72,8 @@ const createCar = async (req, res) => {
             anio: carData.anio,
             descripcion: carData.descripcion,
             precio: carData.precio,
-            foto: carData.foto
+            foto: carData.foto,
+            fav: carData.fav
         })
         await newCar.save()
         console.log(newCar)
@@ -86,6 +88,71 @@ const createCar = async (req, res) => {
         .json({status: "failed", data: null, error: error.message})
     }
 }
+
+const addCarToFav = async (req, res) => {
+    try {
+      const userId = req.user.userId;
+      const carId = req.params.carId;
+  
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado.' });
+      }
+  
+      const car = await carModel.findById(carId);
+      console.log(car, carId)
+      if (!car) {
+        return res.status(404).json({ message: 'Coche no encontrado.' });
+      }
+  
+      // Verificar si el usuario ya está en la lista de favoritos
+      const isUserAddToFav = car.fav.includes(userId);
+      if (isUserAddToFav) {
+        return res.status(400).json({ message: 'El usuario ya está en la lista de favoritos de este coche.' });
+      }
+  
+      car.fav.push(userId);
+      await car.save();
+  
+      res.status(200).json({ message: 'Usuario añadido al favoritos correctamente.' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al añadir usuario a favoritos', error: error.message });
+    }
+  };
+
+  const deleteCarToFav = async (req, res) => {
+    try {
+      const userId = req.user.userId; // ID del usuario que desea eliminar
+      const carId = req.params.carId; // ID del coche
+  
+      // Buscar el usuario por su ID
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado.' });
+      }
+  
+      // Buscar el coche por su ID
+      const car = await carModel.findById(carId);
+      if (!car) {
+        return res.status(404).json({ message: 'Coche no encontrado.' });
+      }
+  
+      // Verificar si el usuario está en la lista de favoritos
+      const isUserInFav = car.fav.includes(userId);
+      if (!isUserInFav) {
+        return res.status(400).json({ message: 'El usuario no está en la lista de favoritos de este coche.' });
+      }
+  
+      // Eliminar al usuario de la lista de favoritos
+      car.fav = car.fav.filter(favUserId => favUserId.toString() !== userId.toString());
+      await car.save();
+  
+      res.status(200).json({ message: 'Usuario eliminado de favoritos correctamente.' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar usuario de favoritos.', error: error.message });
+    }
+  };
+  
 
 const updateCar = async (req, res) => {
     try{
@@ -172,6 +239,8 @@ module.exports = {
     getCarById,
     getFavCarByUserId,
     createCar,
+    addCarToFav,
+    deleteCarToFav,
     updateCar,
     deleteCar
 }
