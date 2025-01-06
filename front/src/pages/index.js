@@ -1,4 +1,5 @@
 import { getAllCars } from "@/api/carsFetch";
+import CarDetailsComponent from "@/components/CarsComponents/CarDetailsComponent";
 import CreatedCarComponent from "@/components/CarsComponents/CreatedCarComponent";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useState } from "react";
@@ -42,15 +43,14 @@ export default function Home() {
   };
 
   return (
-    <>
-    <div className="home-container">
-      <h1 className="home-title">APP COCHES</h1>
-      <div className="home-actions">
+    <div className={styles.homeContainer}>
+      <h1 className={styles.homeTitle}>APP COCHES</h1>
+      <div className={styles.homeActions}>
         {!isCreating ? (
-          <button className="create-button" onClick={handlerCreateCar}>
+          <button className={styles.createButton} onClick={handlerCreateCar}>
             Crear Coche
           </button>
-        ): (
+        ) : (
           <CreatedCarComponent
             setCarHasChanged={setCarHasChanged}
             carHasChanged={carHasChanged}
@@ -59,19 +59,40 @@ export default function Home() {
         )}
         <hr />
       </div>
-      <div className="cars-list">
+      <div className={styles.carsList}>
         {cars &&
           cars.map((car, index) => {
             return (
-              <div className="car-item" key={index}>
-                <span>{car.id} | </span>
-                <span>{car.marca} | </span>
-                {/* <img src={car.foto} />    */}
+              <div className={styles.carItem} key={index}>
+                {/* <span hidden>{car.id} </span> */}
+                <img src= {car.foto} alt="foto del coche"/>
+                <span>Marca: {car.marca} </span>
+                <span>Modelo: {car.modelo} </span>
+                <span>Año: {car.anio} </span>
+                <span>Descripcion: {car.descripcion}  </span>
+                <span>Precio: {car.precio}€  </span>
+                <button
+                  className={styles.detailsButton}
+                  onClick={() => {
+                    handlerOnClick(car.id);
+                  }}
+                >
+                  Ver Coche
+                </button>
               </div>
             );
           })}
       </div>
+      <hr />
+      {carId && (
+        <CarDetailsComponent
+          id={carId}
+          setCarHasChanged={setCarHasChanged}
+          closeCarDetails={closeCarDetails}
+          carHasChanged={carHasChanged}
+        />
+      )}
     </div>
-    </>
   );
 }
+

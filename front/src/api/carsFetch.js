@@ -1,5 +1,5 @@
 
-const carUrlBack = 'http://localhost:9000/cars'
+const carUrlBack = 'http://localhost:9000/cars/'
 
 export const getAllCars = async () => {
     //Peticion al back de todos los coches
@@ -16,7 +16,7 @@ export const getCar = async (id) => {
 };
 
 //PARA BORRAR UN COCHE DE LA BD
-export const deleteDonut = async (id) => {
+export const deleteCar = async (id) => {
     const response = await fetch(carUrlBack+id, {
         method: 'DELETE'
     })
