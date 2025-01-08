@@ -14,6 +14,10 @@ export default function Home() {
 
   // Estado para el Login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //Funcion para manejar el cierre de sesion
+  const handlerOnClickLogin = () => {
+    setIsLoggedIn(false)
+  }
 
   const getAllCarsAux = async () => {
     const carsAux = await getAllCars();
@@ -54,9 +58,16 @@ export default function Home() {
       {/* Mostrar LoginComponent si el usuario no ha iniciado sesión */}
       {!isLoggedIn ? (
         <UserLoginComponent setIsLoggedIn={setIsLoggedIn} />
+        
       ) : (
         <>
           {/* Contenido principal de la página si el usuario ha iniciado sesión */}
+          <div className={styles.closeSesion}>
+            {/* Botón para cerrar sesión */}
+            <button className={styles.closeButton} onClick={handlerOnClickLogin}>
+              Cerrar Sesión
+            </button>
+          </div>
           <div className={styles.homeActions}>
             {!isCreating ? (
               <button className={styles.createButton} onClick={handlerCreateCar}>
