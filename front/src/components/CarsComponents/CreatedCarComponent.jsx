@@ -127,6 +127,11 @@ export default function CreatedCarComponent(props) {
               <button className={styles.submitButton} type="submit">
                 Crear Coche
               </button>
+              
+              <button className={styles.submitButton} onClick={closeCarCreation}>
+                Cerrar Creacion
+              </button>
+              
             </Form>
           )}
         </Formik>

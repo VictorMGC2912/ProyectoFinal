@@ -1,8 +1,8 @@
 import { updateCar } from '@/api/carsFetch';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import styles from '@/styles/EditCarDetails.module.css';
 
 export default function EditCarDetailsComponent(props) {
-
   const { id, car, setCarHasChanged, carHasChanged, closeCarDetails } = props;
 
   const [marca, setMarca] = useState('');
@@ -12,47 +12,23 @@ export default function EditCarDetailsComponent(props) {
   const [precio, setPrecio] = useState('');
   const [foto, setFoto] = useState('');
 
-  const handlerOnChangedMarca = (e) => {
-    setMarca(e.target.value)
-  };
-
-  const handlerOnChangedModelo = (e) => {
-    setModelo(e.target.value)
-  };
-
-  const handlerOnChangedAnio = (e) => {
-    setAnio(e.target.value)
-  };
-
-  const handlerOnChangedDescripcion = (e) => {
-    setDescripcion(e.target.value)
-  };
-
-  const handlerOnChangedPrecio = (e) => {
-    setPrecio(e.target.value)
-  };
-
-  const handlerOnChangedFoto = (e) => {
-    setFoto(e.target.value)
-  };
+  const handlerOnChangedMarca = (e) => setMarca(e.target.value);
+  const handlerOnChangedModelo = (e) => setModelo(e.target.value);
+  const handlerOnChangedAnio = (e) => setAnio(e.target.value);
+  const handlerOnChangedDescripcion = (e) => setDescripcion(e.target.value);
+  const handlerOnChangedPrecio = (e) => setPrecio(e.target.value);
+  const handlerOnChangedFoto = (e) => setFoto(e.target.value);
 
   const saveCar = async () => {
-    await updateCar(id, JSON.stringify({
-      marca,
-      modelo,
-      anio,
-      descripcion,
-      precio,
-      foto
-    }))
-    setCarHasChanged(!carHasChanged)
-    closeCarDetails()
-  }
+    await updateCar(id, JSON.stringify({ marca, modelo, anio, descripcion, precio, foto }));
+    setCarHasChanged(!carHasChanged);
+    closeCarDetails();
+  };
 
   return (
-    <div>
-      <h2>Editar Coche</h2>
-      <div>
+    <div className={styles['edit-car-container']}>
+      <h2 className={styles['edit-car-title']}>Editar {car.marca} {car.modelo}</h2>
+      <div className={styles['edit-car-form']}>
         <div>
           <input value={marca} onChange={handlerOnChangedMarca} placeholder={car.marca} />
         </div>
@@ -71,10 +47,11 @@ export default function EditCarDetailsComponent(props) {
         <div>
           <input value={foto} onChange={handlerOnChangedFoto} placeholder={car.foto} />
         </div>
-        <div>
-            <button onClick={saveCar}>Guardar Coche</button>
-        </div>
+        <button className={styles['save-button']} onClick={saveCar}>
+          Guardar Coche
+        </button>
       </div>
     </div>
-  )
+  );
 }
+
