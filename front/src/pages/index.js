@@ -12,8 +12,16 @@ export default function Home() {
   const [carHasChanged, setCarHasChanged] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Estado para el Login
+  // Estados para el Login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  //Funcion para manejar el cierre de sesion
+  const handlerOnClickLogin = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setUserRole(null);
+    
+  }
 
   const getAllCarsAux = async () => {
     const carsAux = await getAllCars();
@@ -53,21 +61,37 @@ export default function Home() {
 
       {/* Mostrar LoginComponent si el usuario no ha iniciado sesión */}
       {!isLoggedIn ? (
-        <UserLoginComponent setIsLoggedIn={setIsLoggedIn} />
+        <UserLoginComponent 
+        setIsLoggedIn={setIsLoggedIn}
+        setUserRole={setUserRole}
+        />
+        
       ) : (
         <>
           {/* Contenido principal de la página si el usuario ha iniciado sesión */}
+          <div className={styles.closeSesion}>
+            {/* Botón para cerrar sesión */}
+            <button className={styles.closeButton} onClick={handlerOnClickLogin}>
+              Cerrar Sesión
+            </button>
+          </div>
           <div className={styles.homeActions}>
-            {!isCreating ? (
-              <button className={styles.createButton} onClick={handlerCreateCar}>
-                Crear Coche
-              </button>
-            ) : (
-              <CreatedCarComponent
-                setCarHasChanged={setCarHasChanged}
-                carHasChanged={carHasChanged}
-                closeCarCreation={closeCarCreation}
-              />
+            {/* Mostrar el botón de "Crear Coche" solo si el rol del usuario es admin */}
+            {userRole === "admin" && (
+              !isCreating ? (
+                <button
+                  className={styles.createButton}
+                  onClick={handlerCreateCar}
+                >
+                  Crear Coche
+                </button>
+              ) : (
+                <CreatedCarComponent
+                  setCarHasChanged={setCarHasChanged}
+                  carHasChanged={carHasChanged}
+                  closeCarCreation={closeCarCreation}
+                />
+              )
             )}
             <hr />
           </div>

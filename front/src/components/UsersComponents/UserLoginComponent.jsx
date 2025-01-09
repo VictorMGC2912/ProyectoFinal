@@ -5,7 +5,7 @@ import styles from "@/styles/UserLoginComponent.module.css";
 // URL del backend para la ruta de login del usuario
 const userUrlBack = 'http://localhost:9000/user/login';
 
-export default function UserLoginComponent({ setIsLoggedIn }) {
+export default function UserLoginComponent({ setIsLoggedIn, setUserRole }) {
     // Estados para manejar el formulario y los errores
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
@@ -18,8 +18,8 @@ export default function UserLoginComponent({ setIsLoggedIn }) {
             // Realizo la solicitud POST al backend
             const response = await axios.post(userUrlBack, { email, password });
 
-            // Verifo si la respuesta tiene el token, lo que significa que el login fue exitoso
-            const { token } = response.data;
+            // Verifico si la respuesta tiene el token, lo que significa que el login fue exitoso
+            const { token, role } = response.data;
 
             // Si no hay token, lanzamos un error
             if (!token) {
@@ -32,9 +32,11 @@ export default function UserLoginComponent({ setIsLoggedIn }) {
 
             // Cambio el estado para indicar que el usuario ha iniciado sesión correctamente
             setIsLoggedIn(true);
+            setUserRole(role); //Asigna el rol del usuario
 
             // Muestro un mensaje de éxito
             alert('Login Exitoso');
+            
         } catch (error) {
             // Si ocurre un error, muestro un mensaje de error
             console.error('Error en el login:', error);

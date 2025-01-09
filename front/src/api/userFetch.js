@@ -1,11 +1,11 @@
 const userUrlBack = 'http://localhost:9000/users/';
 const signup = 'signup';
 
-export const getAllUsers = async () => {
+export const getUser = async (id) => {
     //Peticion al back de todos los usuarios
-    const response = await fetch(userUrlBack);
-    const users = await response.json();
-    return users;
+    const response = await fetch(userUrlBack+id);
+    const user = await response.json();
+    return user;
 };
 
 //CREAR USUARIOS
