@@ -24,28 +24,28 @@
 /* Estilos para el botón de cierre de sesión */
 .closeSesion {
   position: absolute;
-  top: 20px; /* Ajusta la distancia desde la parte superior */
-  right: 20px; /* Ajusta la distancia desde el borde derecho */
+  top: 20px; 
+  right: 20px; 
 }
 
 .closeSesion button {
-  background-color: #dc3545; /* Rojo para indicar una acción importante */
-  color: white; /* Color del texto */
-  padding: 10px 20px; /* Espaciado interno */
-  font-size: 1rem; /* Tamaño de fuente */
-  border: none; /* Sin borde */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indicador de puntero */
-  transition: background-color 0.3s, transform 0.2s; /* Transiciones para hover */
+  background-color: #dc3545; 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, transform 0.2s; 
 }
 
 .closeSesion button:hover {
-  background-color: #c82333; /* Rojo más oscuro al pasar el mouse */
-  transform: scale(1.05); /* Agranda un poco el botón */
+  background-color: #c82333; 
+  transform: scale(1.05); 
 }
 
 .closeSesion button:active {
-  transform: scale(0.95); /* Botón ligeramente más pequeño al hacer clic */
+  transform: scale(0.95); 
 }
 
 

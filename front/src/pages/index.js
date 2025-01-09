@@ -12,11 +12,15 @@ export default function Home() {
   const [carHasChanged, setCarHasChanged] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Estado para el Login
+  // Estados para el Login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   //Funcion para manejar el cierre de sesion
   const handlerOnClickLogin = () => {
-    setIsLoggedIn(false)
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setUserRole(null);
+    
   }
 
   const getAllCarsAux = async () => {
@@ -57,7 +61,10 @@ export default function Home() {
 
       {/* Mostrar LoginComponent si el usuario no ha iniciado sesión */}
       {!isLoggedIn ? (
-        <UserLoginComponent setIsLoggedIn={setIsLoggedIn} />
+        <UserLoginComponent 
+        setIsLoggedIn={setIsLoggedIn}
+        setUserRole={setUserRole}
+        />
         
       ) : (
         <>
@@ -69,16 +76,22 @@ export default function Home() {
             </button>
           </div>
           <div className={styles.homeActions}>
-            {!isCreating ? (
-              <button className={styles.createButton} onClick={handlerCreateCar}>
-                Crear Coche
-              </button>
-            ) : (
-              <CreatedCarComponent
-                setCarHasChanged={setCarHasChanged}
-                carHasChanged={carHasChanged}
-                closeCarCreation={closeCarCreation}
-              />
+            {/* Mostrar el botón de "Crear Coche" solo si el rol del usuario es admin */}
+            {userRole === "admin" && (
+              !isCreating ? (
+                <button
+                  className={styles.createButton}
+                  onClick={handlerCreateCar}
+                >
+                  Crear Coche
+                </button>
+              ) : (
+                <CreatedCarComponent
+                  setCarHasChanged={setCarHasChanged}
+                  carHasChanged={carHasChanged}
+                  closeCarCreation={closeCarCreation}
+                />
+              )
             )}
             <hr />
           </div>
