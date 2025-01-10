@@ -26,10 +26,6 @@ const carsSchema = new Schema({
         type: String,
         required: true
     },
-    fav: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Referencia al modelo de usuario
-      }],
 });
 
 const car = mongoose.model("Car", carsSchema, "Car");

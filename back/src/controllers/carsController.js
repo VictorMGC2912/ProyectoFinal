@@ -11,6 +11,7 @@ const getCars = async (req, res) => {
         const allCars = await carModel.find();
         const resCar = allCars.map(car => {
             return {
+                id: car.id,
                 marca: car.marca,
                 modelo: car.modelo,
                 anio: car.anio,
@@ -47,19 +48,6 @@ const getCarById = async (req, res) => {
         res
         .status(500)
         .json({status: "failed", data: null, error: error.message})
-    }
-}
-
-const getFavCarByUserId = async (req, res) => {
-    try{
-        const userId = req.user.userId;//OBTENEMOS EL ID DEL HEADER QUE VIENE DEL FRONTEND
-        const cars = await carModel.find({fav: userId}).populate("fav");//CONSULTAMOS DEL CAMPO FAV SI COINCIDE CON EL ID DEL USUARIO QUE NOS VIENE DEL HEADER
-        
-        res.status(200).json(cars);
-    }catch(error){
-        res
-        .status(500)
-        .json({message: "Error al agregar a favoritos", error: error.message});
     }
 }
 
@@ -105,20 +93,50 @@ const addCarToFav = async (req, res) => {
         return res.status(404).json({ message: 'Coche no encontrado.' });
       }
   
-      // Verificar si el usuario ya está en la lista de favoritos
-      const isUserAddToFav = car.fav.includes(userId);
-      if (isUserAddToFav) {
-        return res.status(400).json({ message: 'El usuario ya está en la lista de favoritos de este coche.' });
+      // Verificar si el coche ya está en la lista de favoritos
+      const isCarAddToFav = user.fav.includes(carId);
+      if (isCarAddToFav) {
+        return res.status(400).json({ message: 'El coche ya está en la lista de favoritos de este usuario.' });
       }
   
-      car.fav.push(userId);
-      await car.save();
+      user.fav.push(carId);
+      await user.save();
   
-      res.status(200).json({ message: 'Usuario añadido al favoritos correctamente.' });
+      res.status(200).json({ message: 'Coche añadido a favoritos correctamente.' });
     } catch (error) {
-      res.status(500).json({ message: 'Error al añadir usuario a favoritos', error: error.message });
+      res.status(500).json({ message: 'Error al añadir el coche a favoritos', error: error.message });
     }
   };
+
+  const getFavCarByUserId = async (req, res) => {
+    try{
+        const userId = req.user.userId;//OBTENEMOS EL ID DEL HEADER QUE VIENE DEL FRONTEND
+        if (!userId) {
+            return res.status(400).json({ message: "El ID del usuario no se proporcionó." });
+          }
+        const user = await userModel.findById(userId).populate("fav");//CONSULTAMOS DEL CAMPO FAV SI COINCIDE CON EL ID DEL USUARIO QUE NOS VIENE DEL HEADER
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+          }
+        //Condicion por si el usuario no tiene coches agregados a favoritos  
+        if (user.fav.length === 0) {
+            console.log("El usuario no tiene coches favoritos.");
+            return res.status(200).json({
+              message: "El usuario no tiene coches favoritos.",
+              favCars: user.fav,
+            });
+        }
+        //Respuesta si el usuario tiene coches agregados a favoritos
+        res.status(200).json({
+            message: 'Coches favoritos del usuario obtenidos correctamente',
+            favCars: user.fav, //Aqui nos muestra la lista de coches del usuario
+        });
+    }catch(error){
+        res
+        .status(500)
+        .json({message: "Error al mostrar favoritos", error: error.message});
+    }
+}
 
   const deleteCarToFav = async (req, res) => {
     try {
@@ -138,18 +156,18 @@ const addCarToFav = async (req, res) => {
       }
   
       // Verificar si el usuario está en la lista de favoritos
-      const isUserInFav = car.fav.includes(userId);
-      if (!isUserInFav) {
-        return res.status(400).json({ message: 'El usuario no está en la lista de favoritos de este coche.' });
+      const isCarInFav = user.fav.includes(carId);
+      if (!isCarInFav) {
+        return res.status(400).json({ message: 'El coche no está en la lista de favoritos de este usuario.' });
       }
   
       // Eliminar al usuario de la lista de favoritos
-      car.fav = car.fav.filter(favUserId => favUserId.toString() !== userId.toString());
-      await car.save();
+      user.fav = user.fav.filter(favCarId => favCarId.toString() !== carId.toString());
+      await user.save();
   
-      res.status(200).json({ message: 'Usuario eliminado de favoritos correctamente.' });
+      res.status(200).json({ message: 'Coche eliminado de favoritos correctamente.' });
     } catch (error) {
-      res.status(500).json({ message: 'Error al eliminar usuario de favoritos.', error: error.message });
+      res.status(500).json({ message: 'Error al eliminar coche de favoritos.', error: error.message });
     }
   };
   
