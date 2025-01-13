@@ -1,11 +1,12 @@
 import axios from 'axios'; // Importo axios para peticiones HTTP
 import React, { useState } from 'react'; 
 import styles from "@/styles/UserLoginComponent.module.css"; 
+import CreateUserComponent from './CreateUserComponent';
 
 // URL del backend para la ruta de login del usuario
 const userUrlBack = 'http://localhost:9000/user/login';
 
-export default function UserLoginComponent({ setIsLoggedIn, setUserRole }) {
+export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToken, setUserId }) {
     // Estados para manejar el formulario y los errores
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
@@ -19,7 +20,7 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole }) {
             const response = await axios.post(userUrlBack, { email, password });
 
             // Verifico si la respuesta tiene el token, lo que significa que el login fue exitoso
-            const { token, role } = response.data;
+            const { token, role, id } = response.data;
 
             // Si no hay token, lanzamos un error
             if (!token) {
@@ -28,11 +29,15 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole }) {
             }
 
             // Guardo el token en el almacenamiento local del navegador
-            localStorage.setItem('authToken', token);
+            localStorage.setItem('auth-token', token);
+            console.log("Token guardado en localStorage:", token); //Compruebo que el token se guarda en el localStorage
+            console.log("ID Recibido:", id)
 
             // Cambio el estado para indicar que el usuario ha iniciado sesión correctamente
             setIsLoggedIn(true);
             setUserRole(role); //Asigna el rol del usuario
+            setUserId(id); //Asigna el id del usuario
+            setToken(token);//Asigna el token del usuario
 
             // Muestro un mensaje de éxito
             alert('Login Exitoso');
@@ -52,6 +57,7 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole }) {
         <div className={styles['login-container']}>
             {/* Contenedor principal del formulario */}
             <h2 className={styles['login-title']}>Iniciar Sesión</h2>
+            
             <form className={styles['login-form']} onSubmit={handlerLogin}>
                 {/* Campo para el correo electrónico */}
                 <div className={styles['form-group']}>

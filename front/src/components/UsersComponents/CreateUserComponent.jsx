@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function CreateUserComponent(props) {
-  return (
-    <div>
-      <button>Crear Usuario</button>
-    </div>
-  )
+
+
+export default function CreateUserComponent() {
+
+  return 
+    
+  
 }

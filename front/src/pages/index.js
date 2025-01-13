@@ -1,32 +1,82 @@
-import { getAllCars } from "@/api/carsFetch";
+import { useEffect, useState } from "react";
+import { getAllCars, addCarToFav, removeCarFromFav, getFavCarsByUser } from "@/api/carsFetch";
 import CarDetailsComponent from "@/components/CarsComponents/CarDetailsComponent";
 import CreatedCarComponent from "@/components/CarsComponents/CreatedCarComponent";
 import UserLoginComponent from "@/components/UsersComponents/UserLoginComponent";
 import styles from "@/styles/Home.module.css";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  // Estados para gestionar los coches
+  // Estados para los coches y favoritos
   const [cars, setCars] = useState([]);
+  const [favCars, setFavCars] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
   const [carId, setCarId] = useState(null);
   const [carHasChanged, setCarHasChanged] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Estados para el Login
+  // Estados de autenticación
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
-  //Funcion para manejar el cierre de sesion
+  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
+
+  // Obtener valores de localStorage en el cliente
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+      const storedToken = localStorage.getItem("auth-token");
+      const storedRole = localStorage.getItem("role");
+      console.log("Datos guardados en localStorage:", {token, userId, userRole})
+      if (storedUserId && storedToken && storedRole) {
+        setUserId(storedUserId);
+        setToken(storedToken);
+        setUserRole(storedRole);
+        setIsLoggedIn(true);
+        fetchFavorites(storedUserId, storedToken);
+      }
+    }
+  }, [isLoggedIn]);
+
   const handlerOnClickLogin = () => {
-    localStorage.clear();
+    if (typeof window !== "undefined") {
+      localStorage.clear();
+    }
     setIsLoggedIn(false);
     setUserRole(null);
-    
-  }
+    setUserId(null);
+    setToken(null);
+  };
 
   const getAllCarsAux = async () => {
     const carsAux = await getAllCars();
-    console.log(carsAux);
     setCars(carsAux.data);
+  };
+
+  const fetchFavorites = async (userId, token) => {
+    const cars = await getFavCarsByUser(userId, token);
+    if (cars) {
+      setFavCars(cars);
+    }
+  };
+
+  const handleAddFav = async (carId) => {
+    if (!token) {
+      console.error(token, "No se encontró un token válido.");
+      return;
+    }
+  
+    const response = await addCarToFav(userId, carId, token);
+    if (response) {
+      setFavCars([...favCars, response]);
+    }
+  };
+  
+
+  const handleRemoveFav = async (carId) => {
+    const response = await removeCarFromFav(userId, carId, token);
+    if (response) {
+      setFavCars(favCars.filter((car) => car._id !== carId));
+    }
   };
 
   useEffect(() => {
@@ -38,6 +88,10 @@ export default function Home() {
     setCarHasChanged(false);
     closeCarDetails();
   }, [carHasChanged]);
+
+  const toggleShowFavorites = () => {
+    setShowFavorites(!showFavorites);
+  };
 
   const handlerOnClick = (id) => {
     setCarId(id);
@@ -59,24 +113,22 @@ export default function Home() {
     <div className={styles.homeContainer}>
       <h1 className={styles.homeTitle}>APP COCHES</h1>
 
-      {/* Mostrar LoginComponent si el usuario no ha iniciado sesión */}
       {!isLoggedIn ? (
-        <UserLoginComponent 
-        setIsLoggedIn={setIsLoggedIn}
-        setUserRole={setUserRole}
+        <UserLoginComponent
+          setIsLoggedIn={setIsLoggedIn}
+          setUserRole={setUserRole}
+          setUserId={setUserId}
+          setToken={setToken}
+
         />
-        
       ) : (
         <>
-          {/* Contenido principal de la página si el usuario ha iniciado sesión */}
           <div className={styles.closeSesion}>
-            {/* Botón para cerrar sesión */}
             <button className={styles.closeButton} onClick={handlerOnClickLogin}>
               Cerrar Sesión
             </button>
           </div>
           <div className={styles.homeActions}>
-            {/* Mostrar el botón de "Crear Coche" solo si el rol del usuario es admin */}
             {userRole === "admin" && (
               !isCreating ? (
                 <button
@@ -96,33 +148,45 @@ export default function Home() {
             <hr />
           </div>
 
-          {/* Listado de coches */}
+          <button className={styles.toggleButton} onClick={toggleShowFavorites}>
+            {showFavorites ? "Mostrar Todos los Coches" : "Mostrar Favoritos"}
+          </button>
+
           <div className={styles.carsList}>
-            {cars &&
-              cars.map((car, index) => {
-                return (
-                  <div className={styles.carItem} key={index}>
-                    <img src={car.foto} alt="foto del coche" />
-                    <span>Marca: {car.marca} </span>
-                    <span>Modelo: {car.modelo} </span>
-                    <span>Año: {car.anio} </span>
-                    <span>Descripcion: {car.descripcion} </span>
-                    <span>Precio: {car.precio}€ </span>
-                    <button
-                      className={styles.detailsButton}
-                      onClick={() => {
-                        handlerOnClick(car.id);
-                      }}
-                    >
-                      Ver Coche
-                    </button>
-                  </div>
-                );
-              })}
+            {(showFavorites ? favCars : cars).map((car, index) => (
+              <div className={styles.carItem} key={index}>
+                <img src={car.foto} alt="foto del coche" />
+                <span>Marca: {car.marca} </span>
+                <span>Modelo: {car.modelo} </span>
+                <span>Año: {car.anio} </span>
+                <span>Descripcion: {car.descripcion} </span>
+                <span>Precio: {car.precio}€ </span>
+                <button
+                  className={styles.detailsButton}
+                  onClick={() => handlerOnClick(car.id)}
+                >
+                  Ver Coche
+                </button>
+                {!showFavorites ? (
+                  <button
+                    className={styles.favButton}
+                    onClick={() => handleAddFav(car.id)}
+                  >
+                    Añadir a Favoritos
+                  </button>
+                ) : (
+                  <button
+                    className={styles.unfavButton}
+                    onClick={() => handleRemoveFav(car.id)}
+                  >
+                    Quitar de Favoritos
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
           <hr />
 
-          {/* Mostrar detalles del coche seleccionado */}
           {carId && (
             <CarDetailsComponent
               id={carId}
@@ -136,5 +200,7 @@ export default function Home() {
     </div>
   );
 }
+
+
 
 
