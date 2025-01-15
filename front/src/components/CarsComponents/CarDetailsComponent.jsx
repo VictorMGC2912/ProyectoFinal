@@ -2,6 +2,7 @@ import { deleteCar, getCar } from '@/api/carsFetch';
 import React, { useEffect, useState } from 'react';
 import EditCarDetailsComponent from './EditCarDetailsComponent';
 import styles from '@/styles/CarDetails.module.css';
+import CarsFavoritesComponent from './CarsFavoritesComponent';
 
 export default function CarDetailsComponent(props) {
   const { id, closeCarDetails, setCarHasChanged, carHasChanged } = props;
@@ -44,6 +45,11 @@ export default function CarDetailsComponent(props) {
             <button onClick={initUpdateProcessCar}>Actualizar Coche</button>
             <button onClick={handlerDeleteCar}>Borrar Coche</button>
           </div>
+          {/* <CarsFavoritesComponent 
+            userId={localStorage.getItem("userId")}
+            carId={localStorage.getItem("carId")}
+            token={localStorage.getItem("token")}
+          /> */}
         </div>
       ) : (
         <EditCarDetailsComponent

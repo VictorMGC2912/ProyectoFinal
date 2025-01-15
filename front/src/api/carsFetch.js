@@ -51,4 +51,58 @@ export const createCar = async (bodyParam) => {
     console.log(carCreated)
     return
 };
+
+//OBTENGO LOS COCHES FAVORITOS DEL USUARIO
+export const getFavCarsByUser = async (userId, token) => {
+    const response = await fetch(carUrlBack+userId+"/getFavCarByUserId", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` //Token para autenticacion
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error al obtener los coches favoritos.");
+      }
+    const carsFav = await response.json()
+    return carsFav //Devuelve la lista de coches favoritos
+};
+
+//AGREGO COCHES A FAVORITOS DEL USUARIO
+export const addCarToFav = async (userId, carId, token) => {
+    const response = await fetch("http://localhost:9000/cars/"+carId+"/addCarToFav", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({carId, userId, token})
+    });
+    if (!response.ok) {
+        throw new Error("Error al añadir el coche a favoritos.");
+        
+
+      }
+      
+
+    const carAddFav = await response.json();
+
+    return carAddFav
+};
+
+//BORRAR COCHES DE FAVORITOS
+export const removeCarFromFav = async (userId, carId, token) => {
+    const response = await fetch(carUrlBack+carId+"/deleteCarToFav", {
+        mehtod: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Error al eliminar el coche de favoritos.");
+    }
+    const carRemoveFav = await response.json();
+    return carRemoveFav
+}
     

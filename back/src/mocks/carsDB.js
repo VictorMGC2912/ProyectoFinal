@@ -87,7 +87,7 @@ let carsDB = [
       anio: 2021,
       descripcion: "Un sedán compacto con un diseño moderno y características avanzadas.",
       precio: 21000,
-      foto: "https://netrinoimages.s3.eu-west-2.amazonaws.com/2017/08/13/463730/462600/hyundai_elantra_2021_3d_model_c4d_max_obj_fbx_ma_lwo_3ds_3dm_stl_5459186.jpg"
+      foto: "https://images.dealer.com/autodata/us/640/2021/USD10HYC021A0/USD10HYC021E021001.jpg"
     },
     {
       id: 11,

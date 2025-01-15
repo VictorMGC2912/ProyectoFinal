@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "admin"],
         default: "user"
     },
+    fav: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Car', // Referencia al modelo de usuario
+      }],
     createdAt: {
         type: Date,
         default: Date.now // Asigna la fecha actual como valor por defecto

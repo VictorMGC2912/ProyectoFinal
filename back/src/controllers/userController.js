@@ -3,6 +3,30 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../utils/utils");
 
+const getAllUser = async (req, res) => {
+  try{
+    const allUser = await User.find();
+    const resUser = allUser.map(user => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        role: user.role
+      }
+    })
+    res.status(200).json({
+      status: 'succeeded',
+      data: resUser,
+      error: null
+  })
+  }catch(error) {
+    res
+        .status(500)
+        .json({status: "failed", data: null, error: error.message})
+  }
+}
+
 const addUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -41,7 +65,7 @@ const login = async (req, res) => {
 
     const { email, password } = req.body;
     //Comprobacion si existe el email en la BD
-    const user = await User.findOne({email: email});
+    const user = await User.findOne({email: email}).lean();
     if (user) {
       // Compara la contraseña enviada en la solicitud con la contraseña almacenada en el documento encontrado
       const validPassword = await bcrypt.compare(password, user.password);
@@ -56,7 +80,8 @@ const login = async (req, res) => {
         const token = generateToken(payload, false);
         const token_refresh = generateToken(payload, true);
 
-        return res.status(200).json({status: "succeeded", data: user, token: token, token_refresh: token_refresh});
+        return res.status(200).json({status: "succeeded", data: user, role: user.role, token: token, token_refresh: token_refresh});
+        console.log(user)
       } else {
         return res.status(200).json({
           status: "failed",
@@ -82,7 +107,27 @@ const login = async (req, res) => {
   }
 }
 
+const getUserById = async (req, res) => {
+  try{
+    const id = req.params.id;
+    const user = await User.findById(id);
+    console.log(user)
+    res.status(200).json({
+      status: "succeeded",
+      data: user,
+      error:null
+    })
+  }catch(error){
+    res
+        .status(500)
+        .json({status: "failed", data: null, error: error.message})
+  }
+
+}
+
 module.exports = {
+  getAllUser,
   addUser,
-  login
+  login,
+  getUserById
 };
