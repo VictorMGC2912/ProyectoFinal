@@ -1,0 +1,94 @@
+/* Contenedor principal */
+.create-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Color de fondo suave */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+  
+  /* Título del formulario */
+  .create-user-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Formulario */
+  .create-user-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  /* Grupo de campos del formulario */
+  .create-user-form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-user-form-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+  
+  .create-user-form-group input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .create-user-form-group input:focus {
+    outline: none;
+    border-color: #007bff; /* Azul para el foco */
+  }
+  
+  /* Botón de creación */
+  .create-user-button {
+    background-color: #007bff; /* Azul principal */
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+  }
+  
+  .create-user-button:hover {
+    background-color: #0056b3; /* Azul oscuro al pasar el mouse */
+  }
+  
+  .create-user-button:active {
+    transform: scale(0.98); /* Efecto de clic */
+  }
+  
+  /* Mensaje de error */
+  .error-message {
+    color: #d9534f; /* Rojo para errores */
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Mensaje de éxito */
+  .success-message {
+    color: #5cb85c; /* Verde para éxito */
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  

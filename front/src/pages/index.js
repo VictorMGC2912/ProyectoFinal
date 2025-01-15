@@ -26,7 +26,7 @@ export default function Home() {
       const storedUserId = localStorage.getItem("userId");
       const storedToken = localStorage.getItem("auth-token");
       const storedRole = localStorage.getItem("role");
-      console.log("Datos guardados en localStorage:", {token, userId, userRole})
+      console.log("Datos recuperados de localStorage:", { storedToken, storedUserId, storedRole });
       if (storedUserId && storedToken && storedRole) {
         setUserId(storedUserId);
         setToken(storedToken);
@@ -64,10 +64,11 @@ export default function Home() {
       console.error(token, "No se encontró un token válido.");
       return;
     }
-  
-    const response = await addCarToFav(userId, carId, token);
+    const response = await addCarToFav(carId);
     if (response) {
       setFavCars([...favCars, response]);
+      console.log("Respuesta del servidor al agregar favorito:", response);
+
     }
   };
   

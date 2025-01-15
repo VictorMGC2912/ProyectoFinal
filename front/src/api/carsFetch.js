@@ -76,7 +76,7 @@ export const addCarToFav = async (userId, carId, token) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({carId})
+        body: JSON.stringify({carId, userId, token})
     });
     if (!response.ok) {
         throw new Error("Error al añadir el coche a favoritos.");
