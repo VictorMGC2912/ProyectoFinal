@@ -62,50 +62,56 @@ const addUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-
     const { email, password } = req.body;
-    //Comprobacion si existe el email en la BD
-    const user = await User.findOne({email: email}).lean();
-    if (user) {
-      // Compara la contraseña enviada en la solicitud con la contraseña almacenada en el documento encontrado
-      const validPassword = await bcrypt.compare(password, user.password);
-      if(validPassword) {
-        //ToDo: GENERAR TOKEN
-        //Payload para pasar al generador de token que es una funcion que nos traemos de utils
-        const payload = {
-          userId: user._id,
-          name: user.name,
-          email: user.email
-        };
-        const token = generateToken(payload, false);
-        const token_refresh = generateToken(payload, true);
 
-        return res.status(200).json({status: "succeeded", data: user, role: user.role, token: token, token_refresh: token_refresh});
-        console.log(user)
-      } else {
-        return res.status(200).json({
-          status: "failed",
-          message: "Email y contraseña no coinciden",
-        });
-      }
-
-    } else {
-      return res.status(200).json({
+    // Comprobación si existe el email en la BD
+    const user = await User.findOne({ email: email }).lean();
+    if (!user) {
+      // Devuelve 404 si el usuario no existe
+      return res.status(404).json({
         status: "failed",
-        message: "Email y contraseña no coinciden",
+        message: "Usuario no encontrado",
       });
     }
 
+    // Compara la contraseña enviada con la contraseña almacenada
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      // Devuelve 401 si la contraseña es incorrecta
+      return res.status(401).json({
+        status: "failed",
+        message: "Contraseña incorrecta",
+      });
+    }
 
-  }catch(error) {
-    res.status(400).json({
+    // Generar los tokens si todo está correcto
+    const payload = {
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+    };
+    const token = generateToken(payload, false);
+    const token_refresh = generateToken(payload, true);
+
+    // Respuesta exitosa
+    return res.status(200).json({
+      status: "succeeded",
+      data: user,
+      _id: user._id,
+      role: user.role,
+      token: token,
+      token_refresh: token_refresh,
+    });
+  } catch (error) {
+    // Manejo de errores generales
+    res.status(500).json({
       status: "failed",
-      message: "No se ha podido hacer login",
+      message: "Error interno del servidor",
       error: error.message,
-      
     });
   }
-}
+};
+
 
 const getUserById = async (req, res) => {
   try{

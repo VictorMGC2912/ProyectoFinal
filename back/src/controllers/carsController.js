@@ -80,7 +80,9 @@ const createCar = async (req, res) => {
 const addCarToFav = async (req, res) => {
     try {
       const userId = req.user.userId;
+      console.log(userId)
       const carId = req.params.carId;
+        console.log(carId)
   
       const user = await userModel.findById(userId);
       if (!user) {
