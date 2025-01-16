@@ -20,6 +20,7 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToke
       
           localStorage.setItem("auth-token", token);
           localStorage.setItem("role", role);
+          localStorage.setItem("_id", _id);
       
           setIsLoggedIn(true);
           setUserRole(role);

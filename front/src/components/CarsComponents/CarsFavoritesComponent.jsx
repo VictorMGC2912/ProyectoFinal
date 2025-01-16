@@ -1,7 +1,7 @@
 import { addCarToFav, getFavCarsByUser, removeCarFromFav } from '@/api/carsFetch';
 import React, { useEffect, useState } from 'react'
 
-export default function CarsFavoritesComponent(userId, carId, token) {
+export default function CarsFavoritesComponent(carId, userId, token) {
     const [favCars, setFavCars] = useState([]);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function CarsFavoritesComponent(userId, carId, token) {
 
     //Manejador para agregar coches a favoritos
     const handleAddFav = async (carId) => {
-        const response = await addCarToFav(userId, carId, token);
+        const response = await addCarToFav(carId, userId, token);
         if(response) {
             setFavCars([...favCars, response]);//Actualiza la lista de favoritos
         }
@@ -25,7 +25,7 @@ export default function CarsFavoritesComponent(userId, carId, token) {
 
     //Manejador para borrar coches de favoritos
     const handleRemoveFav = async (carId) => {
-        const response = await removeCarFromFav(userId, carId, token);
+        const response = await removeCarFromFav(carId, userId, token);
         if(response) {
             setFavCars(favCars.filter((car) => car._id !== carId));//Elimina de la lista
         }
