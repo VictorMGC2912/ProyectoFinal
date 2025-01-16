@@ -69,14 +69,14 @@ export const getFavCarsByUser = async (userId, token) => {
 };
 
 //AGREGO COCHES A FAVORITOS DEL USUARIO
-export const addCarToFav = async (userId, carId, token) => {
-    const response = await fetch("http://localhost:9000/cars/"+carId+"/addCarToFav", {
+export const addCarToFav = async (id, userId, token) => {
+    const response = await fetch("http://localhost:9000/cars/"+id+"/addCarToFav", {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({carId, userId, token})
+        body: JSON.stringify({id, userId, token})
     });
     if (!response.ok) {
         throw new Error("Error al añadir el coche a favoritos.");

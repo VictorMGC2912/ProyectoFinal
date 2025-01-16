@@ -23,7 +23,7 @@ export default function Home() {
   // Obtener valores de localStorage en el cliente
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedUserId = localStorage.getItem("userId");
+      const storedUserId = localStorage.getItem("_id");
       const storedToken = localStorage.getItem("auth-token");
       const storedRole = localStorage.getItem("role");
       console.log("Datos recuperados de localStorage:", { storedToken, storedUserId, storedRole });
@@ -52,27 +52,28 @@ export default function Home() {
     setCars(carsAux.data);
   };
 
+  //Mostrar array de coches favoritos
   const fetchFavorites = async (userId, token) => {
     const cars = await getFavCarsByUser(userId, token);
     if (cars) {
       setFavCars(cars);
     }
   };
-
-  const handleAddFav = async (carId) => {
+//Manejador para agregar a Favoritos
+  const handleAddFav = async (id) => {
+    setCarId(id)
     if (!token) {
       console.error(token, "No se encontró un token válido.");
       return;
     }
-    const response = await addCarToFav(carId);
+    const response = await addCarToFav(carId, userId, token);
     if (response) {
       setFavCars([...favCars, response]);
       console.log("Respuesta del servidor al agregar favorito:", response);
 
     }
   };
-  
-
+  //Manejador para borrar de Favoritos
   const handleRemoveFav = async (carId) => {
     const response = await removeCarFromFav(userId, carId, token);
     if (response) {
@@ -171,7 +172,7 @@ export default function Home() {
                 {!showFavorites ? (
                   <button
                     className={styles.favButton}
-                    onClick={() => handleAddFav(car.id)}
+                    onClick={() => handleAddFav(carId, userId, token)}
                   >
                     Añadir a Favoritos
                   </button>
