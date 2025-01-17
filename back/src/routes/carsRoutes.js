@@ -8,7 +8,7 @@ const carsRouter = require('express').Router();
 //SOLO SE UTILIZA PARA CARGA INICIAL EN MONGO
 //carsRouter.get('/loadData', loadData);
 carsRouter.get('/', getCars);
-carsRouter.get('/:id/getFavCarByUserId', verifyToken, getFavCarByUserId);
+carsRouter.get('/:userId/getFavCarByUserId', verifyToken, getFavCarByUserId);
 carsRouter.post('/', createCar);
 carsRouter.patch('/:carId/addCarToFav',verifyToken, addCarToFav);
 carsRouter.delete('/:id/deleteCarToFav', verifyToken, deleteCarToFav);
