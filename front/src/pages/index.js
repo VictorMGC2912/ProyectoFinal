@@ -32,7 +32,7 @@ export default function Home() {
         setToken(storedToken);
         setUserRole(storedRole);
         setIsLoggedIn(true);
-        fetchFavorites(storedUserId, storedToken);
+        
       }
     }
   }, [isLoggedIn]);
@@ -54,25 +54,33 @@ export default function Home() {
 
   //Mostrar array de coches favoritos
   const fetchFavorites = async (userId, token) => {
-    const cars = await getFavCarsByUser(userId, token);
-    if (cars) {
-      setFavCars(cars);
+    if (!userId || !token) {
+      console.error("No se encontró un userId o token válido.");
+      return;
+    }
+    try {
+      const cars = await getFavCarsByUser(userId, token);
+      if (cars) {
+        setFavCars(cars);
+      }
+    } catch (error) {
+      console.error("Error al cargar los favoritos:", error);
     }
   };
 //Manejador para agregar a Favoritos
-  const handleAddFav = async (id) => {
-    setCarId(id)
-    if (!token) {
-      console.error(token, "No se encontró un token válido.");
-      return;
+const handleAddFav = async (carId, userId, token) => {
+  try {
+    const carAdded = await addCarToFav(carId, userId, token);
+    if (carAdded) {
+      setFavCars([carAdded])
+      setFavCars((prevFavCars) => [...prevFavCars, carAdded]); // Añadir el coche al estado de favoritos
+      console.log("Coche añadido a favoritos:", carAdded);
     }
-    const response = await addCarToFav(carId, userId, token);
-    if (response) {
-      setFavCars([...favCars, response]);
-      console.log("Respuesta del servidor al agregar favorito:", response);
+  } catch (error) {
+    console.error("Error al añadir a favoritos:", error);
+  }
+};
 
-    }
-  };
   //Manejador para borrar de Favoritos
   const handleRemoveFav = async (carId) => {
     const response = await removeCarFromFav(userId, carId, token);
@@ -91,9 +99,14 @@ export default function Home() {
     closeCarDetails();
   }, [carHasChanged]);
 
-  const toggleShowFavorites = () => {
+  const toggleShowFavorites = async () => {
+    if (!showFavorites && userId && token) {
+      // Solo cargar favoritos si el usuario está autenticado y activa la vista
+      await fetchFavorites(userId, token);
+    }
     setShowFavorites(!showFavorites);
   };
+  
 
   const handlerOnClick = (id) => {
     setCarId(id);
@@ -155,37 +168,41 @@ export default function Home() {
           </button>
 
           <div className={styles.carsList}>
-            {(showFavorites ? favCars : cars).map((car, index) => (
-              <div className={styles.carItem} key={index}>
-                <img src={car.foto} alt="foto del coche" />
-                <span>Marca: {car.marca} </span>
-                <span>Modelo: {car.modelo} </span>
-                <span>Año: {car.anio} </span>
-                <span>Descripcion: {car.descripcion} </span>
-                <span>Precio: {car.precio}€ </span>
-                <button
-                  className={styles.detailsButton}
-                  onClick={() => handlerOnClick(car.id)}
-                >
-                  Ver Coche
-                </button>
-                {!showFavorites ? (
+            {(showFavorites ? favCars : cars)?.length > 0 ? (
+              (showFavorites ? favCars : cars).map((car, index) => (
+                <div className={styles.carItem} key={index}>
+                  <img src={car.foto} alt="foto del coche" />
+                  <span>Marca: {car.marca}</span>
+                  <span>Modelo: {car.modelo}</span>
+                  <span>Año: {car.anio}</span>
+                  <span>Descripción: {car.descripcion}</span>
+                  <span>Precio: {car.precio}€</span>
                   <button
-                    className={styles.favButton}
-                    onClick={() => handleAddFav(carId, userId, token)}
+                    className={styles.detailsButton}
+                    onClick={() => handlerOnClick(car.id)}
                   >
-                    Añadir a Favoritos
+                    Ver Coche
                   </button>
-                ) : (
-                  <button
-                    className={styles.unfavButton}
-                    onClick={() => handleRemoveFav(car.id)}
-                  >
-                    Quitar de Favoritos
-                  </button>
-                )}
-              </div>
-            ))}
+                  {!showFavorites ? (
+                    <button
+                      className={styles.favButton}
+                      onClick={() => handleAddFav(car.id, userId, token)}
+                    >
+                      Añadir a Favoritos
+                    </button>
+                  ) : (
+                    <button
+                      className={styles.unfavButton}
+                      onClick={() => handleRemoveFav(car.id)}
+                    >
+                      Quitar de Favoritos
+                    </button>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>No hay coches disponibles.</p> // Mensaje si no hay datos
+            )}
           </div>
           <hr />
 
