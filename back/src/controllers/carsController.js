@@ -51,6 +51,36 @@ const getCarById = async (req, res) => {
     }
 }
 
+const getFavCarByUserId = async (req, res) => {
+    try{
+        const userId = req.user.userId;//OBTENEMOS EL ID DEL HEADER QUE VIENE DEL FRONTEND
+        if (!userId) {
+            return res.status(400).json({ message: "El ID del usuario no se proporcionó." });
+          }
+        const user = await userModel.findById(userId).populate("fav");//CONSULTAMOS DEL CAMPO FAV SI COINCIDE CON EL ID DEL USUARIO QUE NOS VIENE DEL HEADER
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+          }
+        //Condicion por si el usuario no tiene coches agregados a favoritos  
+        if (user.fav.length === 0) {
+            console.log("El usuario no tiene coches favoritos.");
+            return res.status(200).json({
+              message: "El usuario no tiene coches favoritos.",
+              favCars: user.fav,
+            });
+        }
+        //Respuesta si el usuario tiene coches agregados a favoritos
+        res.status(200).json({
+            message: 'Coches favoritos del usuario obtenidos correctamente',
+            favCars: user.fav, //Aqui nos muestra la lista de coches del usuario
+        });
+    }catch(error){
+        res
+        .status(500)
+        .json({message: "Error al mostrar favoritos", error: error.message});
+    }
+}
+
 const createCar = async (req, res) => {
     try{
         const carData = req.body
@@ -102,41 +132,11 @@ const addCarToFav = async (req, res) => {
       user.fav.push(carId);
       await user.save();
   
-      res.status(200).json({ message: 'Coche añadido a favoritos correctamente.' });
+      res.status(200).json({ message: 'Coche añadido a favoritos correctamente.', carId });
     } catch (error) {
       res.status(500).json({ message: 'Error al añadir el coche a favoritos', error: error.message });
     }
   };
-
-  const getFavCarByUserId = async (req, res) => {
-    try{
-        const userId = req.user.userId;//OBTENEMOS EL ID DEL HEADER QUE VIENE DEL FRONTEND
-        if (!userId) {
-            return res.status(400).json({ message: "El ID del usuario no se proporcionó." });
-          }
-        const user = await userModel.findById(userId).populate("fav");//CONSULTAMOS DEL CAMPO FAV SI COINCIDE CON EL ID DEL USUARIO QUE NOS VIENE DEL HEADER
-        if (!user) {
-            return res.status(404).json({ message: "Usuario no encontrado." });
-          }
-        //Condicion por si el usuario no tiene coches agregados a favoritos  
-        if (user.fav.length === 0) {
-            console.log("El usuario no tiene coches favoritos.");
-            return res.status(200).json({
-              message: "El usuario no tiene coches favoritos.",
-              favCars: user.fav,
-            });
-        }
-        //Respuesta si el usuario tiene coches agregados a favoritos
-        res.status(200).json({
-            message: 'Coches favoritos del usuario obtenidos correctamente',
-            favCars: user.fav, //Aqui nos muestra la lista de coches del usuario
-        });
-    }catch(error){
-        res
-        .status(500)
-        .json({message: "Error al mostrar favoritos", error: error.message});
-    }
-}
 
   const deleteCarToFav = async (req, res) => {
     try {

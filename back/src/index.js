@@ -14,7 +14,6 @@ require("dotenv").config();
 
 app.use(cors());
 
-
 //CONEXION CON MONGO
 const url_mongo = process.env.DATABASE_URL_DEV
 mongoose.connect(url_mongo);
