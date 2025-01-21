@@ -11,8 +11,8 @@ carsRouter.get('/', getCars);
 carsRouter.get('/:userId/getFavCarByUserId', verifyToken, getFavCarByUserId);
 carsRouter.post('/', createCar);
 carsRouter.patch('/:carId/addCarToFav',verifyToken, addCarToFav);
-carsRouter.delete('/:id/deleteCarToFav', verifyToken, deleteCarToFav);
-carsRouter.get('/:id', getCarById);
+carsRouter.delete('/:carId/deleteCarToFav', verifyToken, deleteCarToFav);
+carsRouter.get('/:carId', getCarById);
 carsRouter.put('/:id', updateCar);
 carsRouter.delete('/:id', deleteCar);
 
