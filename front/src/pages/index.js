@@ -180,6 +180,7 @@ const handleAddFav = async (carId, userId, token) => {
                   <span>Año: {car.anio}</span>
                   <span>Descripción: {car.descripcion}</span>
                   <span>Precio: {car.precio}€</span>
+                  
                   <button
                     className={styles.detailsButton}
                     onClick={() => handlerOnClick(car.id)}
@@ -195,7 +196,7 @@ const handleAddFav = async (carId, userId, token) => {
                     </button>
                   ) : (
                     <button
-                      className={styles.unfavButton}
+                      className={styles.favButton}
                       onClick={() => handleRemoveFav(car._id)}
                     >
                       Quitar de Favoritos
