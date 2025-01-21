@@ -59,9 +59,12 @@ export default function Home() {
       return;
     }
     try {
-      const cars = await getFavCarsByUser(userId, token);
-      if (cars) {
-        setFavCars(cars);
+      const response = await getFavCarsByUser(userId, token);
+      if (response && Array.isArray(response.favCars)) {
+        setFavCars(response.favCars);
+      }else {
+        console.warn("La respuesta no contiene coches favoritos validos", response);
+        setFavCars([]);//Si no hay coches favoritos
       }
     } catch (error) {
       console.error("Error al cargar los favoritos:", error);
@@ -193,7 +196,7 @@ const handleAddFav = async (carId, userId, token) => {
                   ) : (
                     <button
                       className={styles.unfavButton}
-                      onClick={() => handleRemoveFav(car.id)}
+                      onClick={() => handleRemoveFav(car._id)}
                     >
                       Quitar de Favoritos
                     </button>
@@ -201,7 +204,7 @@ const handleAddFav = async (carId, userId, token) => {
                 </div>
               ))
             ) : (
-              <p>No hay coches disponibles.</p> // Mensaje si no hay datos
+              <p>{showFavorites ? "No tienes coches favoritos." : "No hay coches disponibles."}</p>
             )}
           </div>
           <hr />

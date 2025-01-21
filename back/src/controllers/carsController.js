@@ -140,8 +140,11 @@ const addCarToFav = async (req, res) => {
 
   const deleteCarToFav = async (req, res) => {
     try {
-      const userId = req.user.userId; // ID del usuario que desea eliminar
-      const carId = req.params.carId; // ID del coche
+      const userId = req.user.userId; // ID del usuario
+      const carId = req.params.carId; // ID del coche que desea eliminar
+
+        console.log("userId recibido:", userId);
+        console.log("carId recibido:", carId);
   
       // Buscar el usuario por su ID
       const user = await userModel.findById(userId);
@@ -155,13 +158,13 @@ const addCarToFav = async (req, res) => {
         return res.status(404).json({ message: 'Coche no encontrado.' });
       }
   
-      // Verificar si el usuario está en la lista de favoritos
+      // Verificar si el coche está en la lista de favoritos
       const isCarInFav = user.fav.includes(carId);
       if (!isCarInFav) {
         return res.status(400).json({ message: 'El coche no está en la lista de favoritos de este usuario.' });
       }
   
-      // Eliminar al usuario de la lista de favoritos
+      // Eliminar al coche de la lista de favoritos
       user.fav = user.fav.filter(favCarId => favCarId.toString() !== carId.toString());
       await user.save();
   
