@@ -105,11 +105,15 @@ export const addCarToFav = async (carId, userId, token) => {
 
 //BORRAR COCHES DE FAVORITOS
 export const removeCarFromFav = async (userId, carId, token) => {
-    const response = await fetch(carUrlBack+carId+"/deleteCarToFav", {
+  if (!carId || !token) {
+    console.error("No se encontró un carId o token válido.");
+    return;
+  }
+    const response = await fetch(`${carUrlBack}${carId}/deleteCarToFav`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: token
         },
     });
     if (!response.ok) {
