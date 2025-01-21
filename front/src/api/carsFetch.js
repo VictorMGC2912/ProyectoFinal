@@ -54,46 +54,59 @@ export const createCar = async (bodyParam) => {
 
 //OBTENGO LOS COCHES FAVORITOS DEL USUARIO
 export const getFavCarsByUser = async (userId, token) => {
-    const response = await fetch(carUrlBack+userId+"/getFavCarByUserId", {
+    try {
+      const response = await fetch(`${carUrlBack}${userId}/getFavCarByUserId`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}` //Token para autenticacion
+          "Content-Type": "application/json",
+          Authorization: token, // Token para autenticación
         },
-    });
-    if (!response.ok) {
-        throw new Error("Error al obtener los coches favoritos.");
+      });
+  
+      if (!response.ok) {
+        console.error("Error al obtener los favoritos:", await response.text());
+        throw new Error(`Error al obtener los coches favoritos: ${response.status}`);
       }
-    const carsFav = await response.json()
-    return carsFav //Devuelve la lista de coches favoritos
-};
+  
+      const carsFav = await response.json();
+      return carsFav;
+    } catch (error) {
+      console.error("Error de red o autenticación:", error);
+      throw error;
+    }
+  };
+  
 
 //AGREGO COCHES A FAVORITOS DEL USUARIO
-export const addCarToFav = async (id, userId, token) => {
-    const response = await fetch("http://localhost:9000/cars/"+id+"/addCarToFav", {
+export const addCarToFav = async (carId, userId, token) => {
+    try {
+      const response = await fetch(`http://localhost:9000/cars/${carId}/addCarToFav`, {
         method: "PATCH",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: token, // Token en headers
         },
-        body: JSON.stringify({id, userId, token})
-    });
-    if (!response.ok) {
-        throw new Error("Error al añadir el coche a favoritos.");
-        
-
+        body: JSON.stringify({ carId, userId }), // Solo enviar id y userId
+      });
+  
+      if (!response.ok) {
+        console.error("Error al añadir favorito:", await response.text());
+        throw new Error(`Error al añadir el coche a favoritos: ${response.status}`);
       }
-      
-
-    const carAddFav = await response.json();
-
-    return carAddFav
-};
+  
+      const carAddFav = await response.json();
+      return carAddFav;
+    } catch (error) {
+      console.error("Error de red o autenticación:", error);
+      throw error;
+    }
+  };
+  
 
 //BORRAR COCHES DE FAVORITOS
 export const removeCarFromFav = async (userId, carId, token) => {
     const response = await fetch(carUrlBack+carId+"/deleteCarToFav", {
-        mehtod: "DELETE",
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
