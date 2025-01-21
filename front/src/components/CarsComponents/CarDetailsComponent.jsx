@@ -2,18 +2,23 @@ import { deleteCar, getCar } from '@/api/carsFetch';
 import React, { useEffect, useState } from 'react';
 import EditCarDetailsComponent from './EditCarDetailsComponent';
 import styles from '@/styles/CarDetails.module.css';
-import CarsFavoritesComponent from './CarsFavoritesComponent';
 
 export default function CarDetailsComponent(props) {
   const { id, closeCarDetails, setCarHasChanged, carHasChanged } = props;
 
-  const [car, setCar] = useState([]);
+  const [car, setCar] = useState(null); // Cambiar estado inicial a null
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const loadCar = async () => {
-      const carAux = await getCar(id);
-      setCar(carAux.data);
+      try {
+        console.log("Obteniendo datos del coche con ID:", id);
+        const carAux = await getCar(id);
+        console.log("Datos del coche recibidos:", carAux.data);
+        setCar(carAux.data); // Asegúrate de que `carAux.data` contenga los datos esperados
+      } catch (error) {
+        console.error("Error al cargar los detalles del coche:", error);
+      }
     };
     loadCar();
   }, [id]);
@@ -29,36 +34,35 @@ export default function CarDetailsComponent(props) {
 
   return (
     <div className={styles['car-details-container']}>
-      {!isEditing ? (
-        <div>
-          <h2 className={styles['car-details-title']}>{car.marca} {car.modelo}</h2>
-          <div className={styles['car-info']}>
-            <p>Marca: {car.marca}</p>
-            <p>Modelo: {car.modelo}</p>
-            <p>Año: {car.anio}</p>
-            <p>Descripción: {car.descripcion}</p>
-            <p>Precio: {car.precio}€</p>
-            <img src={car.foto} alt="Foto del coche" />
+      {car ? ( // Renderiza solo si `car` tiene datos
+        !isEditing ? (
+          <div>
+            <h2 className={styles['car-details-title']}>{car.marca} {car.modelo}</h2>
+            <div className={styles['car-info']}>
+              <p>Marca: {car.marca}</p>
+              <p>Modelo: {car.modelo}</p>
+              <p>Año: {car.anio}</p>
+              <p>Descripción: {car.descripcion}</p>
+              <p>Precio: {car.precio}€</p>
+              <img src={car.foto} alt="Foto del coche" />
+            </div>
+            <div className={styles['options-container']}>
+              <h4 className={styles['options-title']}>Opciones</h4>
+              <button onClick={initUpdateProcessCar}>Actualizar Coche</button>
+              <button onClick={handlerDeleteCar}>Borrar Coche</button>
+            </div>
           </div>
-          <div className={styles['options-container']}>
-            <h4 className={styles['options-title']}>Opciones</h4>
-            <button onClick={initUpdateProcessCar}>Actualizar Coche</button>
-            <button onClick={handlerDeleteCar}>Borrar Coche</button>
-          </div>
-          {/* <CarsFavoritesComponent 
-            userId={localStorage.getItem("userId")}
-            carId={localStorage.getItem("carId")}
-            token={localStorage.getItem("token")}
-          /> */}
-        </div>
-      ) : (
-        <EditCarDetailsComponent
-          id={id}
-          car={car}
-          setCarHasChanged={setCarHasChanged}
-          carHasChanged={carHasChanged}
-          closeCarDetails={closeCarDetails}
-        />
+        ) : (
+          <EditCarDetailsComponent
+            id={id}
+            car={car}
+            setCarHasChanged={setCarHasChanged}
+            carHasChanged={carHasChanged}
+            closeCarDetails={closeCarDetails}
+          />
+        )
+      ) : ( // Muestro un mensaje mientras se cargan los datos
+        <p>Cargando detalles del coche...</p>
       )}
       <hr />
       <button className={styles['close-button']} onClick={closeCarDetails}>
@@ -67,4 +71,3 @@ export default function CarDetailsComponent(props) {
     </div>
   );
 }
-

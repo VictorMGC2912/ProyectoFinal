@@ -10,7 +10,7 @@ export const getAllCars = async () => {
 
 //NOS DA UN COCHE POR ID
 export const getCar = async (id) => {
-    const response = await fetch(carUrlBack+id);
+    const response = await fetch(`${carUrlBack}${id}`);
     const cars = await response.json();
     return cars
 };
