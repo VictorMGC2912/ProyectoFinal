@@ -60,6 +60,39 @@ const addUser = async (req, res) => {
   }
 };
 
+const  updateUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, email, password } = req.body
+
+    const userAux = await User.findById(id);
+    if(!userAux) return res.status(404).send('Usuario no encontrado');
+
+    if(name) {
+      userAux.name = name
+    }
+    if(email) {
+      userAux.email = email
+    }
+    if(password) {
+      userAux.password = userAux.password = await bcrypt.hash(password, 10);
+    }
+    await userAux.save()
+    res.status(200).json({
+      status: "succeeded",
+      data: userAux,
+      error: null
+  })
+  }catch(error) {
+    res
+    .status(500)
+    .json({
+      status: "failed",
+      message: "No se pudo modificar Usuario"
+    })
+  }
+}
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -134,6 +167,7 @@ const getUserById = async (req, res) => {
 module.exports = {
   getAllUser,
   addUser,
+  updateUser,
   login,
   getUserById
 };

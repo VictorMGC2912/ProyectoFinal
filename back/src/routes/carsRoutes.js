@@ -12,9 +12,9 @@ carsRouter.get('/:userId/getFavCarByUserId', verifyToken, getFavCarByUserId);
 carsRouter.post('/', createCar);
 carsRouter.patch('/:carId/addCarToFav',verifyToken, addCarToFav);
 carsRouter.delete('/:carId/deleteCarToFav', verifyToken, deleteCarToFav);
-carsRouter.get('/:carId', getCarById);
+carsRouter.get('/:id', getCarById);
 carsRouter.put('/:id', updateCar);
-carsRouter.delete('/:id', deleteCar);
+carsRouter.delete('/:carId', deleteCar);
 
 
 module.exports = carsRouter;
