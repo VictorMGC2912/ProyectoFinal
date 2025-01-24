@@ -4,6 +4,7 @@ import CarDetailsComponent from "@/components/CarsComponents/CarDetailsComponent
 import CreatedCarComponent from "@/components/CarsComponents/CreatedCarComponent";
 import UserLoginComponent from "@/components/UsersComponents/UserLoginComponent";
 import styles from "@/styles/Home.module.css";
+import EditUserDetailsComponent from "@/components/UsersComponents/EditUserDetailsComponent";
 
 export default function Home() {
   // Estados para los coches y favoritos
@@ -14,11 +15,14 @@ export default function Home() {
   const [carHasChanged, setCarHasChanged] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Estados de autenticación
+  // Estados de autenticación y perfil
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(null);
+  const [userHasChanged, setUserHasChanged] = useState(false);
+  const [isUserUpdating, setIsUserUpdating] = useState(false);
+
 
   // Obtener valores de localStorage en el cliente
   useEffect(() => {
@@ -110,7 +114,7 @@ const handleAddFav = async (carId, userId, token) => {
     setShowFavorites(!showFavorites);
   };
   
-
+  //MANEJADORES DE COCHES
   const handlerOnClick = (id) => {
     setCarId(id);
   };
@@ -127,6 +131,16 @@ const handleAddFav = async (carId, userId, token) => {
     setIsCreating(false);
   };
 
+  //MANEJADORES DE USUARIOS
+  const handlerUpdateUser = () => {
+    setIsUserUpdating(true);
+  }
+
+  const closeUserUpdating = () => {
+    setIsUserUpdating(false);
+  }
+
+
   return (
     <div className={styles.homeContainer}>
       <h1 className={styles.homeTitle}>APP COCHES</h1>
@@ -141,6 +155,26 @@ const handleAddFav = async (carId, userId, token) => {
         />
       ) : (
         <>
+          <div>
+          {userId === userId && (
+              !isUserUpdating ? (
+                <button
+                  className={styles.updateUserButton}
+                  onClick={handlerUpdateUser}
+                >
+                  Ver Perfil
+                </button>
+              ) : (
+                <EditUserDetailsComponent
+                  id={userId}
+                  setUserHasChanged={setUserHasChanged}
+                  userHasChanged={userHasChanged}
+                  closeUserUpdating={closeUserUpdating}
+                />
+              )
+            )}
+
+          </div>
           <div className={styles.closeSesion}>
             <button className={styles.closeButton} onClick={handlerOnClickLogin}>
               Cerrar Sesión

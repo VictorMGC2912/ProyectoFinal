@@ -20,3 +20,16 @@ export const createUser = async (bodyParam) => {
     console.log(userCreated)
     return
 };
+
+//PARA ACTUALIZAR DATOS USUARIO
+export const updateUser = async (id, bodyParam) => {
+    const response = await fetch(userUrlBack+id, {
+        method: 'PUT',
+        headers: {"Content-Type": "application/json"},
+        body: bodyParam
+    })
+    const userUpdate = await response.json()
+    if(userUpdate.error) console.log(userUpdate.error)
+    console.log(userUpdate)
+    return
+};
