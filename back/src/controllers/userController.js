@@ -164,10 +164,27 @@ const getUserById = async (req, res) => {
 
 }
 
+const deleteUser = async (req, res) => {
+  try{
+    const id = req.params.id;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({
+      status: 'succeeded',
+      data: null,
+      error: null
+    })
+  }catch(error){
+    res
+    .status(500)
+    .json({status: "failed", data: null, error: error.message})
+  }
+}
+
 module.exports = {
   getAllUser,
   addUser,
   updateUser,
   login,
-  getUserById
+  getUserById,
+  deleteUser
 };
