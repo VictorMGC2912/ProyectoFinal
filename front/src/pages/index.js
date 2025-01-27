@@ -5,6 +5,7 @@ import CreatedCarComponent from "@/components/CarsComponents/CreatedCarComponent
 import UserLoginComponent from "@/components/UsersComponents/UserLoginComponent";
 import styles from "@/styles/Home.module.css";
 import EditUserDetailsComponent from "@/components/UsersComponents/EditUserDetailsComponent";
+import UserDetailsComponent from "@/components/UsersComponents/UserDetailsComponent";
 
 export default function Home() {
   // Estados para los coches y favoritos
@@ -165,7 +166,7 @@ const handleAddFav = async (carId, userId, token) => {
                   Ver Perfil
                 </button>
               ) : (
-                <EditUserDetailsComponent
+                <UserDetailsComponent
                   id={userId}
                   setUserHasChanged={setUserHasChanged}
                   userHasChanged={userHasChanged}

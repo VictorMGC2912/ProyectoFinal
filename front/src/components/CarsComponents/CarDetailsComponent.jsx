@@ -15,7 +15,7 @@ export default function CarDetailsComponent(props) {
         console.log("Obteniendo datos del coche con ID:", id);
         const carAux = await getCar(id);
         console.log("Datos del coche recibidos:", carAux.data);
-        setCar(carAux.data); // Asegúrate de que `carAux.data` contenga los datos esperados
+        setCar(carAux.data); //Seteamos los datos del coche
       } catch (error) {
         console.error("Error al cargar los detalles del coche:", error);
       }
@@ -23,6 +23,7 @@ export default function CarDetailsComponent(props) {
     loadCar();
   }, [id]);
 
+  //Manejador para iniciar proceso de editar
   const initUpdateProcessCar = () => {
     setIsEditing(true);
   };

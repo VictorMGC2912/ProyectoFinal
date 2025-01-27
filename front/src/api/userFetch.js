@@ -1,8 +1,8 @@
-const userUrlBack = 'http://localhost:9000/users/';
+const userUrlBack = 'http://localhost:9000/user/';
 const signup = 'signup';
 
 export const getUser = async (id) => {
-    //Peticion al back de todos los usuarios
+    //Peticion al back del usuario
     const response = await fetch(userUrlBack+id);
     const user = await response.json();
     return user;
@@ -26,10 +26,10 @@ export const updateUser = async (id, bodyParam) => {
     const response = await fetch(userUrlBack+id, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
-        body: bodyParam
+        body: JSON.stringify(bodyParam)
     })
     const userUpdate = await response.json()
     if(userUpdate.error) console.log(userUpdate.error)
     console.log(userUpdate)
-    return
+    return await userUpdate
 };
