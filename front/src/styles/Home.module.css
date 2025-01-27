@@ -48,6 +48,32 @@
   transform: scale(0.95); 
 }
 
+/* Estilos para boton de ver perfil */
+.updateUserButton {
+  position: absolute;
+  top: 60px; 
+  right: 55px; 
+}
+
+.updateUserButton {
+  background-color: #3651e7; 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, transform 0.2s; 
+}
+
+.updateUserButton:hover {
+  background-color: #3651e7; 
+  transform: scale(1.05); 
+}
+.updateUserButton:active {
+  transform: scale(0.95); 
+}
+
 
 .createButton {
   background-color: #007bff;
@@ -113,6 +139,15 @@
   margin: 10px 0;
   padding: 10px 20px;
   background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.updateUserButton {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #311b81;
   color: white;
   border: none;
   border-radius: 5px;

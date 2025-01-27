@@ -1,69 +1,49 @@
-import { updateUser } from '@/api/userFetch';
-import React, { useState, useEffect } from 'react';
-import styles from '@/styles/EditUserDetails.module.css'; // Asegúrate de que este archivo CSS exista
+import { updateUser } from "@/api/userFetch";
+import React, { useState } from "react";
+import styles from "@/styles/EditUserDetails.module.css";
 
 export default function EditUserDetailsComponent(props) {
-  const { id, setUserHasChanged, userHasChanged, closeUserUpdating } = props;
+  const { id, user, setUserHasChanged, userHasChanged, closeUserUpdating } = props;
 
-  // Estados de los campos
-  const [user, setUser] = useState(null); // Inicializamos como null
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  // Cargar datos del usuario al montar el componente
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const response = await updateUser(id); // Cambia esta URL según tu backend
-        const data = await response.json();
-        setUser(data); // Guardo el usuario completo en el estado
-        setName(data.name || ''); // Inicializo los valores de los inputs
-        setEmail(data.email || '');
-      } catch (error) {
-        console.error('Error al cargar el usuario:', error);
-      }
-    };
-    loadUser();
-  }, [id]);
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [password, setPassword] = useState("");
 
   // Manejadores de los campos
   const handlerOnChangedName = (e) => setName(e.target.value);
   const handlerOnChangedEmail = (e) => setEmail(e.target.value);
   const handlerOnChangedPassword = (e) => setPassword(e.target.value);
 
-  // Guardamos los datos actualizados del usuario
+  // Guardo los datos del usuario
   const saveUser = async () => {
     try {
-      await updateUser(id, JSON.stringify({ name, email, password }));
-      setUserHasChanged(!userHasChanged); // Notificamos el cambio
-      closeUserUpdating(); // Cerramos el modal
+      const updatedUser = { name, email };
+      if (password) updatedUser.password = password;
+
+      await updateUser(id, updatedUser);
+      setUserHasChanged(!userHasChanged); // Notifico el cambio
+      closeUserUpdating(); // Cerrar edicion despues de editar
     } catch (error) {
-      console.error('Error al actualizar el usuario:', error);
+      console.error("Error al actualizar el usuario:", error);
     }
   };
 
-  // Muestra un mensaje de carga mientras se obtienen los datos
-  if (!user) {
-    return <p>Cargando datos del usuario...</p>;
-  }
-
   return (
-    <div className={styles['edit-user-container']}>
-      <h2 className={styles['edit-user-title']}>Editar Usuario</h2>
-      <div className={styles['edit-user-form']}>
+    <div className={styles["edit-user-container"]}>
+      <h2 className={styles["edit-user-title"]}>Editar Usuario</h2>
+      <div className={styles["edit-user-form"]}>
         <div>
           <input
             value={name}
             onChange={handlerOnChangedName}
-            placeholder={user.name || 'Nombre'}
+            placeholder="Nombre"
           />
         </div>
         <div>
           <input
             value={email}
             onChange={handlerOnChangedEmail}
-            placeholder={user.email || 'Email'}
+            placeholder="Email"
           />
         </div>
         <div>
@@ -74,9 +54,10 @@ export default function EditUserDetailsComponent(props) {
             placeholder="Contraseña (opcional)"
           />
         </div>
-        <button className={styles['save-button']} onClick={saveUser}>
+        <button className={styles["save-button"]} onClick={saveUser}>
           Guardar Usuario
         </button>
+        <button onClick={closeUserUpdating}>Cancelar</button>
       </div>
     </div>
   );
