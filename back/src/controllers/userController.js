@@ -59,39 +59,57 @@ const addUser = async (req, res) => {
     
   }
 };
-
-const  updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
-    const id = req.params.id;
-    const { name, email, password } = req.body
+    const id = req.params.id; // ID del usuario
+    const updatedData = req.body; // Datos enviados desde el frontend
 
-    const userAux = await User.findById(id);
-    if(!userAux) return res.status(404).send('Usuario no encontrado');
+    // Busca y actualiza el usuario en la base de datos
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
 
-    if(name) {
-      userAux.name = name
+    if (!updatedUser) {
+      return res.status(404).json({ status: 'failed', error: 'Usuario no encontrado' });
     }
-    if(email) {
-      userAux.email = email
-    }
-    if(password) {
-      userAux.password = userAux.password = await bcrypt.hash(password, 10);
-    }
-    await userAux.save()
-    res.status(200).json({
-      status: "succeeded",
-      data: userAux,
-      error: null
-  })
-  }catch(error) {
-    res
-    .status(500)
-    .json({
-      status: "failed",
-      message: "No se pudo modificar Usuario"
-    })
+
+    res.status(200).json({ status: 'succeeded', data: updatedUser });
+  } catch (error) {
+    res.status(500).json({ status: 'failed', error: error.message });
   }
-}
+};
+
+
+// const  updateUser = async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const { name, email, password } = req.body
+
+//     const userAux = await User.findByIdAndUpdate(id);
+//     if(!userAux) return res.status(404).send('Usuario no encontrado');
+
+//     if(name) {
+//       userAux.name = name
+//     }
+//     if(email) {
+//       userAux.email = email
+//     }
+//     if(password) {
+//       userAux.password = userAux.password = await bcrypt.hash(password, 10);
+//     }
+//     await userAux.save()
+//     res.status(200).json({
+//       status: "succeeded",
+//       data: userAux,
+//       error: null
+//   })
+//   }catch(error) {
+//     res
+//     .status(500)
+//     .json({
+//       status: "failed",
+//       message: "No se pudo modificar Usuario"
+//     })
+//   }
+// }
 
 const login = async (req, res) => {
   try {
@@ -164,10 +182,27 @@ const getUserById = async (req, res) => {
 
 }
 
+const deleteUser = async (req, res) => {
+  try{
+    const id = req.params.id;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({
+      status: 'succeeded',
+      data: null,
+      error: null
+    })
+  }catch(error){
+    res
+    .status(500)
+    .json({status: "failed", data: null, error: error.message})
+  }
+}
+
 module.exports = {
   getAllUser,
   addUser,
   updateUser,
   login,
-  getUserById
+  getUserById,
+  deleteUser
 };
