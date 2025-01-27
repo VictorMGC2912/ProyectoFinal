@@ -12,7 +12,12 @@ app.use(express.json());
 // Esto nos permite obtener la información de configuración de ".env"
 require("dotenv").config();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://10.5.0.2:3000', // La URL de tu frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Cabeceras permitidas
+  }));
+//   
 
 //CONEXION CON MONGO
 const url_mongo = process.env.DATABASE_URL_DEV
