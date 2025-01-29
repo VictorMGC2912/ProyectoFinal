@@ -4,7 +4,7 @@ import EditCarDetailsComponent from './EditCarDetailsComponent';
 import styles from '@/styles/CarDetails.module.css';
 
 export default function CarDetailsComponent(props) {
-  const { id, closeCarDetails, setCarHasChanged, carHasChanged } = props;
+  const { id, closeCarDetails, setCarHasChanged, carHasChanged, userRole } = props;
 
   const [car, setCar] = useState(null); // Cambiar estado inicial a null
   const [isEditing, setIsEditing] = useState(false);
