@@ -1,5 +1,5 @@
 /* Contenedor principal */
-.edit-car-container {
+.editCarContainer {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -9,7 +9,7 @@
   }
   
   /* Título */
-  .edit-car-title {
+  .editCarTitle {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -18,11 +18,11 @@
   }
   
   /* Campos de entrada */
-  .edit-car-form div {
+  .editCarForm div {
     margin-bottom: 15px;
   }
   
-  .edit-car-form input {
+  .editCarForm input {
     width: 100%;
     padding: 10px;
     font-size: 14px;
@@ -32,13 +32,13 @@
     transition: border-color 0.3s ease;
   }
   
-  .edit-car-form input:focus {
+  .editCarForm input:focus {
     border-color: #007bff;
     outline: none;
   }
   
   /* Botón para guardar */
-  .save-button {
+  .saveButton {
     display: block;
     background-color: #28a745;
     color: #fff;
@@ -52,7 +52,7 @@
     transition: background-color 0.3s ease;
   }
   
-  .save-button:hover {
+  .saveButton:hover {
     background-color: #218838;
   }
   
