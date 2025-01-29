@@ -247,6 +247,7 @@ const handleAddFav = async (carId, userId, token) => {
 
           {carId && (
             <CarDetailsComponent
+              userRole={userRole}
               id={carId}
               setCarHasChanged={setCarHasChanged}
               closeCarDetails={closeCarDetails}
