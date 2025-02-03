@@ -14,7 +14,7 @@ carsRouter.patch('/:carId/addCarToFav',verifyToken, addCarToFav);
 carsRouter.delete('/:carId/deleteCarToFav', verifyToken, deleteCarToFav);
 carsRouter.get('/:id', getCarById);
 carsRouter.put('/:id', updateCar);
-carsRouter.delete('/:carId', deleteCar);
+carsRouter.delete('/:id', deleteCar);
 
 
 module.exports = carsRouter;
