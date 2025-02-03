@@ -1,5 +1,5 @@
 /* Contenedor principal */
-.car-details-container {
+.carDetailsContainer {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -9,7 +9,7 @@
   }
   
   /* Título */
-  .car-details-title {
+  .carDetailsTitle {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -18,33 +18,33 @@
   }
   
   /* Información del coche */
-  .car-info {
+  .carInfo {
     font-size: 16px;
     line-height: 1.5;
     color: #555;
     margin-bottom: 20px;
   }
   
-  .car-info img {
+  .carInfo img {
     max-width: 100%;
     border-radius: 8px;
     margin-top: 10px;
   }
   
   /* Opciones */
-  .options-container {
+  .optionsContainer {
     margin-top: 20px;
     text-align: center;
   }
   
-  .options-title {
+  .optionsTitle {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
     color: #444;
   }
   
-  .options-container button {
+  .optionsContainer button {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -56,12 +56,12 @@
     transition: background-color 0.3s ease;
   }
   
-  .options-container button:hover {
+  .optionsContainer button:hover {
     background-color: #0056b3;
   }
   
   /* Botón para cerrar detalles */
-  .close-button {
+  .closeButton {
     display: block;
     background-color: #dc3545;
     color: #fff;
@@ -75,7 +75,7 @@
     text-align: center;
   }
   
-  .close-button:hover {
+  .closeButton:hover {
     background-color: #a71d2a;
   }
   

@@ -4,7 +4,7 @@ import EditCarDetailsComponent from './EditCarDetailsComponent';
 import styles from '@/styles/CarDetails.module.css';
 
 export default function CarDetailsComponent(props) {
-  const { id, closeCarDetails, setCarHasChanged, carHasChanged } = props;
+  const { id, closeCarDetails, setCarHasChanged, carHasChanged, userRole } = props;
 
   const [car, setCar] = useState(null); // Cambiar estado inicial a null
   const [isEditing, setIsEditing] = useState(false);
@@ -34,12 +34,12 @@ export default function CarDetailsComponent(props) {
   };
 
   return (
-    <div className={styles['car-details-container']}>
+    <div className={styles.carDetailsContainer}>
       {car ? ( // Renderiza solo si `car` tiene datos
         !isEditing ? (
           <div>
-            <h2 className={styles['car-details-title']}>{car.marca} {car.modelo}</h2>
-            <div className={styles['car-info']}>
+            <h2 className={styles.carDetailsTitle}>{car.marca} {car.modelo}</h2>
+            <div className={styles.carInfo}>
               <p>Marca: {car.marca}</p>
               <p>Modelo: {car.modelo}</p>
               <p>Año: {car.anio}</p>
@@ -47,10 +47,13 @@ export default function CarDetailsComponent(props) {
               <p>Precio: {car.precio}€</p>
               <img src={car.foto} alt="Foto del coche" />
             </div>
-            <div className={styles['options-container']}>
-              <h4 className={styles['options-title']}>Opciones</h4>
+            <div className={styles.optionsContainer}>
+              <h4 className={styles.optionsTitle}>Opciones</h4>
               <button onClick={initUpdateProcessCar}>Actualizar Coche</button>
-              <button onClick={handlerDeleteCar}>Borrar Coche</button>
+              {userRole === "admin" && (
+                <button onClick={handlerDeleteCar}>Borrar Coche</button>
+              )}
+              
             </div>
           </div>
         ) : (
@@ -66,7 +69,7 @@ export default function CarDetailsComponent(props) {
         <p>Cargando detalles del coche...</p>
       )}
       <hr />
-      <button className={styles['close-button']} onClick={closeCarDetails}>
+      <button className={styles.closeButton} onClick={closeCarDetails}>
         Cerrar Detalles
       </button>
     </div>

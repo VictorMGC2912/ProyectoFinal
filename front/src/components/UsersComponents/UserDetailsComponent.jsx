@@ -1,50 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { getUser } from "@/api/userFetch";
 import EditUserDetailsComponent from "./EditUserDetailsComponent";
+import styles from '@/styles/UserDetailsComponent.module.css';
 
 export default function UserDetailsComponent(props) {
   const { id, closeUserUpdating, setUserHasChanged, userHasChanged } = props;
 
-  const [user, setUser] = useState(null); // Estado del usuario
-  const [isEditing, setIsEditing] = useState(false); // Controla de edición
-  const [loading, setLoading] = useState(false); // Controla de estado de carga
+  const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Función para cargar datos del usuario al pulsar el botón "Ver Perfil"
-  const loadUserProfile = async () => {
-    try {
-      setLoading(true); // Inicia el estado de carga
-      console.log("Obteniendo datos del usuario con ID:", id);
-      const userAux = await getUser(id);
-      console.log("Datos del usuario recibidos:", userAux.data);
-      setUser(userAux.data); // Guarda los datos del usuario
-    } catch (error) {
-      console.error("Error al cargar los detalles del usuario:", error);
-    } finally {
-      setLoading(false); // Finaliza el estado de carga
-    }
-  };
-
-  // Ejecuta `loadUserProfile` al montar el componente
   useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        setLoading(true);
+        const userAux = await getUser(id);
+        setUser(userAux.data);
+      } catch (error) {
+        console.error("Error al cargar los detalles del usuario:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     loadUserProfile();
-  }, []);
+  }, [id]);
 
-  // Manejador para iniciar la actualizacion de datos del usuario
-  const initUpdateProcessUser = () => {
-    setIsEditing(true);
-  };
-
-  // Manejador para dejar de editar
-  const exitUpdateProcessUser = () => {
-    setIsEditing(false);
-  };
+  const initUpdateProcessUser = () => setIsEditing(true);
+  const exitUpdateProcessUser = () => setIsEditing(false);
 
   if (loading) {
-    return <p>Cargando datos del usuario...</p>;
+    return <p className={styles.loadingText}>Cargando datos del usuario...</p>;
   }
 
   return (
-    <div>
+    <div className={styles.userDetailsContainer}>
       {user ? (
         isEditing ? (
           <EditUserDetailsComponent
@@ -55,16 +44,22 @@ export default function UserDetailsComponent(props) {
             closeUserUpdating={exitUpdateProcessUser}
           />
         ) : (
-          <div>
-            <h2>Perfil del Usuario</h2>
-            <p>Nombre: {user.name}</p>
-            <p>Email: {user.email}</p>
-            <button onClick={initUpdateProcessUser}>Editar Usuario</button>
-            <button onClick={closeUserUpdating}>Cerrar</button>
+          <div className={styles.userInfo}>
+            <h2 className={styles.userTitle}>Perfil del Usuario</h2>
+            <p className={styles.userText}><strong>Nombre:</strong> {user.name}</p>
+            <p className={styles.userText}><strong>Email:</strong> {user.email}</p>
+            <div className={styles.buttonGroup}>
+              <button className={styles.editButton} onClick={initUpdateProcessUser}>
+                Editar Usuario
+              </button>
+              <button className={styles.closeButton} onClick={closeUserUpdating}>
+                Cerrar
+              </button>
+            </div>
           </div>
         )
       ) : (
-        <p>Error al cargar el perfil o usuario no encontrado.</p>
+        <p className={styles.errorText}>Error al cargar el perfil o usuario no encontrado.</p>
       )}
     </div>
   );

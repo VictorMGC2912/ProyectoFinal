@@ -26,9 +26,9 @@ export default function EditCarDetailsComponent(props) {
   };
 
   return (
-    <div className={styles['edit-car-container']}>
-      <h2 className={styles['edit-car-title']}>Editar {car.marca} {car.modelo}</h2>
-      <div className={styles['edit-car-form']}>
+    <div className={styles.editCarContainer}>
+      <h2 className={styles.editCarTitle}>Editar {car.marca} {car.modelo}</h2>
+      <div className={styles.editCarForm}>
         <div>
           <input value={marca} onChange={handlerOnChangedMarca} placeholder={car.marca} />
         </div>
@@ -47,7 +47,7 @@ export default function EditCarDetailsComponent(props) {
         <div>
           <input value={foto} onChange={handlerOnChangedFoto} placeholder={car.foto} />
         </div>
-        <button className={styles['save-button']} onClick={saveCar}>
+        <button className={styles.saveButton} onClick={saveCar}>
           Guardar Coche
         </button>
       </div>

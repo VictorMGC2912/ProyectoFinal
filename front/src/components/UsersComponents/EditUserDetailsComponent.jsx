@@ -29,9 +29,9 @@ export default function EditUserDetailsComponent(props) {
   };
 
   return (
-    <div className={styles["edit-user-container"]}>
-      <h2 className={styles["edit-user-title"]}>Editar Usuario</h2>
-      <div className={styles["edit-user-form"]}>
+    <div className={styles.editUserContainer}>
+      <h2 className={styles.editUserTitle}>Editar Usuario</h2>
+      <div className={styles.editUserForm}>
         <div>
           <input
             value={name}
@@ -54,10 +54,10 @@ export default function EditUserDetailsComponent(props) {
             placeholder="Contraseña (opcional)"
           />
         </div>
-        <button className={styles["save-button"]} onClick={saveUser}>
+        <button className={styles.saveButton} onClick={saveUser}>
           Guardar Usuario
         </button>
-        <button onClick={closeUserUpdating}>Cancelar</button>
+        <button className={styles.cancelButton} onClick={closeUserUpdating}>Cancelar</button>
       </div>
     </div>
   );

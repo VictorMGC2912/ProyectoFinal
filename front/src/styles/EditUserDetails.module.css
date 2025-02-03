@@ -1,4 +1,4 @@
-.edit-user-container {
+.editUserContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,37 +10,48 @@
   margin: 2rem auto;
 }
 
-.edit-user-title {
+.editUserTitle {
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
   color: #333;
+  text-align: center;
 }
 
-.edit-user-form {
+.editUserForm {
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Centra los elementos dentro del formulario */
   gap: 1rem;
 }
 
-.edit-user-form input {
-  width: 100%;
+.editUserForm input {
+  width: 90%; /* Reduce un poco el ancho para que no se vea pegado */
   padding: 0.8rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
   color: #333;
+  text-align: center; /* Centra el texto dentro del input */
   outline: none;
   transition: border-color 0.3s ease;
 }
 
-.edit-user-form input:focus {
+.editUserForm input:focus {
   border-color: #007bff;
 }
 
-.save-button {
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
+  gap: 1rem;
+}
+
+.saveButton,
+.cancelButton {
+  flex: 1;
   padding: 0.8rem;
   background-color: #007bff;
   color: #fff;
@@ -50,8 +61,10 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center;
 }
 
-.save-button:hover {
+.saveButton:hover,
+.cancelButton:hover {
   background-color: #0056b3;
 }

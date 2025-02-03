@@ -1,75 +1,60 @@
-/* Contenedor principal */
-.user-details-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 20px auto;
-  }
-  
-  /* Estilo para la tarjeta de usuario */
-  .user-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%;
-    text-align: left;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-card h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .user-card p {
-    font-size: 18px;
-    margin: 5px 0;
-    color: #555;
-  }
-  
-  /* Grupo de botones */
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  /* Botones principales */
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Botones secundarios */
-  .btn-secondary {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #495057;
-  }
-  
+.userDetailsContainer {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.userTitle {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.userText {
+  font-size: 16px;
+  color: #555;
+  margin: 8px 0;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.editButton, .closeButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.closeButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.closeButton:hover {
+  background-color: #a71d2a;
+}
+
+.loadingText, .errorText {
+  font-size: 16px;
+  color: #777;
+  margin-top: 20px;
+}
