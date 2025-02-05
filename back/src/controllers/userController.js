@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../utils/utils");
 
+//CONSEGUIR LOS USUARIOS
 const getAllUser = async (req, res) => {
   try{
     const allUser = await User.find();
@@ -27,6 +28,7 @@ const getAllUser = async (req, res) => {
   }
 }
 
+//AGREGAR NUEVO USUARIO
 const addUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -59,6 +61,8 @@ const addUser = async (req, res) => {
     
   }
 };
+
+//ACTUALIZAR DATOS DEL USUARIO
 const updateUser = async (req, res) => {
   try {
     const id = req.params.id; // ID del usuario
@@ -77,40 +81,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-
-// const  updateUser = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const { name, email, password } = req.body
-
-//     const userAux = await User.findByIdAndUpdate(id);
-//     if(!userAux) return res.status(404).send('Usuario no encontrado');
-
-//     if(name) {
-//       userAux.name = name
-//     }
-//     if(email) {
-//       userAux.email = email
-//     }
-//     if(password) {
-//       userAux.password = userAux.password = await bcrypt.hash(password, 10);
-//     }
-//     await userAux.save()
-//     res.status(200).json({
-//       status: "succeeded",
-//       data: userAux,
-//       error: null
-//   })
-//   }catch(error) {
-//     res
-//     .status(500)
-//     .json({
-//       status: "failed",
-//       message: "No se pudo modificar Usuario"
-//     })
-//   }
-// }
-
+//HACER LOGIN DEL USUARIO
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -163,7 +134,7 @@ const login = async (req, res) => {
   }
 };
 
-
+//CONSEGUIR DATOS DE USUARIO POR ID
 const getUserById = async (req, res) => {
   try{
     const id = req.params.id;
@@ -182,6 +153,7 @@ const getUserById = async (req, res) => {
 
 }
 
+//BORRAR USUARIOS
 const deleteUser = async (req, res) => {
   try{
     const id = req.params.id;
