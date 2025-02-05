@@ -7,12 +7,14 @@ import styles from "@/styles/CreatedCarComponent.module.css"; // Importa el CSS 
 export default function CreatedCarComponent(props) {
   const { setCarHasChanged, carHasChanged, closeCarCreation } = props;
 
+  //FUncion para agregar un coche llamando a la API
   const addCar = async (props) => {
-    await createCar(JSON.stringify(props));
-    setCarHasChanged(!carHasChanged);
-    closeCarCreation();
+    await createCar(JSON.stringify(props)); //Convertimos los valores a JSON antes de enviarlo
+    setCarHasChanged(!carHasChanged); //Envia al componente padre que la lista de coches ha cambiado
+    closeCarCreation(); //Cerramos el formulario
   };
 
+  //Esquema de validacion usando YUP
   const validationSchemaYup = object({
     marca: string().required(),
     modelo: string().required(),
@@ -35,7 +37,7 @@ export default function CreatedCarComponent(props) {
             precio: '',
             foto: '',
           }}
-          onSubmit={(values) => addCar(values)}
+          onSubmit={(values) => addCar(values)} //Llama a la funcion addCar al enviar el formulario
           validationSchema={validationSchemaYup}
         >
           {() => (

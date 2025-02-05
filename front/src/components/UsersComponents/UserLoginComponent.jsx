@@ -6,22 +6,26 @@ import CreateUserComponent from './CreateUserComponent';
 const userUrlBack = 'http://localhost:9000/user/login';
 
 export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToken, setUserId }) {
-    const [email, setEmail] = useState(''); 
-    const [password, setPassword] = useState(''); 
-    const [errorMessage, setErrorMessage] = useState('');
-    const [showCreateUser, setShowCreateUser] = useState(false);
+    const [email, setEmail] = useState(''); //Estado para el correo electronico
+    const [password, setPassword] = useState(''); //Estado para la contrase;a
+    const [errorMessage, setErrorMessage] = useState(''); //Estado para errores
+    const [showCreateUser, setShowCreateUser] = useState(false); //Estado para mostrar el formulario de creacion de usuario
 
+    //Manejador de inicio de sesion
     const handlerLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); //Previene el comportamiento por defecto del formulario
       
         try {
+            //Llamada al backend para autenticar al usuario
           const response = await axios.post(userUrlBack, { email, password });
           const { token, role, _id } = response.data;
-      
+            
+          //Guarda los datos de autenticacion en el almacenamiento local
           localStorage.setItem("auth-token", token);
           localStorage.setItem("role", role);
           localStorage.setItem("_id", _id);
       
+          //Actualiza los estados para indicar que el usuario esta autenticado
           setIsLoggedIn(true);
           setUserRole(role);
           setUserId(_id);
@@ -39,19 +43,20 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToke
             setShowCreateUser(true);
           }
         }
-      };
+    };
       
 
+    //Manejo del evento despues de crear el usuario
     const handleUserCreated = () => {
         setShowCreateUser(false);
         setErrorMessage('Usuario creado con éxito. Ahora puedes iniciar sesión.');
     };
 
     return (
-        <div className={styles['login-container']}>
-            <h2 className={styles['login-title']}>Iniciar Sesión</h2>
-            <form className={styles['login-form']} onSubmit={handlerLogin}>
-                <div className={styles['form-group']}>
+        <div className={styles.loginContainer}>
+            <h2 className={styles.loginTitle}>Iniciar Sesión</h2>
+            <form className={styles.loginForm} onSubmit={handlerLogin}>
+                <div className={styles.formGroup}>
                     <label htmlFor="email">Correo Electrónico:</label>
                     <input
                         type="email"
@@ -62,7 +67,7 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToke
                         required
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles.formGroup}>
                     <label htmlFor="password">Contraseña:</label>
                     <input
                         type="password"
@@ -73,8 +78,8 @@ export default function UserLoginComponent({ setIsLoggedIn, setUserRole, setToke
                         required
                     />
                 </div>
-                {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
-                <button type="submit" className={styles['login-button']}>
+                {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+                <button type="submit" className={styles.loginButton}>
                     Iniciar Sesión
                 </button>
             </form>

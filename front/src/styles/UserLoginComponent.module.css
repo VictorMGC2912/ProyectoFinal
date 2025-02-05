@@ -1,5 +1,5 @@
 /* Contenedor principal del formulario de login */
-.login-container {
+.loginContainer {
     width: 100%;
     max-width: 400px;
     margin: 50px auto;
@@ -12,7 +12,7 @@
   }
   
   /* Título del login */
-  .login-title {
+  .loginTitle {
     font-size: 24px;
     font-weight: bold;
     color: #333;
@@ -20,28 +20,28 @@
   }
   
   /* Estilos del formulario */
-  .login-form {
+  .loginForm {
     display: flex;
     flex-direction: column;
     gap: 15px;
   }
   
   /* Grupo de formularios */
-  .form-group {
+  .formGroup {
     display: flex;
     flex-direction: column;
     text-align: left;
   }
   
   /* Etiquetas del formulario */
-  .form-group label {
+  .formGroup label {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
   }
   
   /* Campos de entrada */
-  .form-group input {
+  .formGroup input {
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ddd;
@@ -50,12 +50,12 @@
     transition: border-color 0.3s ease;
   }
   
-  .form-group input:focus {
+  .formGroup input:focus {
     border-color: #007bff;
   }
   
   /* Botón de inicio de sesión */
-  .login-button {
+  .loginButton {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -67,12 +67,12 @@
     transition: background-color 0.3s ease;
   }
   
-  .login-button:hover {
+  .loginButton:hover {
     background-color: #0056b3;
   }
   
   /* Mensaje de error */
-  .error-message {
+  .errorMessage {
     font-size: 14px;
     color: #d9534f;
     margin-top: 10px;

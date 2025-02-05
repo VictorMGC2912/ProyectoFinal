@@ -1,5 +1,5 @@
 /* Contenedor principal */
-.create-user-container {
+.createUserContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +13,7 @@
   }
   
   /* Título del formulario */
-  .create-user-title {
+  .createUserTitle {
     font-size: 1.8rem;
     font-weight: bold;
     color: #333;
@@ -22,7 +22,7 @@
   }
   
   /* Formulario */
-  .create-user-form {
+  .createUserForm {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -30,19 +30,19 @@
   }
   
   /* Grupo de campos del formulario */
-  .create-user-form-group {
+  .createUserFormGroup {
     display: flex;
     flex-direction: column;
   }
   
-  .create-user-form-group label {
+  .createUserFormGroup label {
     font-size: 1rem;
     font-weight: 500;
     color: #555;
     margin-bottom: 0.5rem;
   }
   
-  .create-user-form-group input {
+  .createUserFormGroup input {
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -50,14 +50,14 @@
     transition: border-color 0.2s;
   }
   
-  .create-user-form-group input:focus {
+  .createUserFormGroup input:focus {
     outline: none;
-    border-color: #007bff; /* Azul para el foco */
+    border-color: #007bff; 
   }
   
   /* Botón de creación */
-  .create-user-button {
-    background-color: #007bff; /* Azul principal */
+  .createUserButton {
+    background-color: #007bff; 
     color: #fff;
     padding: 0.8rem;
     border: none;
@@ -68,16 +68,16 @@
     transition: background-color 0.2s, transform 0.1s;
   }
   
-  .create-user-button:hover {
-    background-color: #0056b3; /* Azul oscuro al pasar el mouse */
+  .createUserButton:hover {
+    background-color: #0056b3;
   }
   
-  .create-user-button:active {
+  .createUserButton:active {
     transform: scale(0.98); /* Efecto de clic */
   }
   
   /* Mensaje de error */
-  .error-message {
+  .errorMessage {
     color: #d9534f; /* Rojo para errores */
     font-size: 0.9rem;
     font-weight: bold;
@@ -85,7 +85,7 @@
   }
   
   /* Mensaje de éxito */
-  .success-message {
+  .successMessage {
     color: #5cb85c; /* Verde para éxito */
     font-size: 0.9rem;
     font-weight: bold;

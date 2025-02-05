@@ -194,8 +194,17 @@
   .homeContainer {
     padding: 10px;
   }
+  .homeTitle {
+    text-align: left;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
 
   .createButton {
+    display: flex;
+    align-items: flex-start;
     font-size: 0.9rem;
     padding: 8px 15px;
   }
