@@ -5,13 +5,14 @@ import styles from '@/styles/EditCarDetails.module.css';
 export default function EditCarDetailsComponent(props) {
   const { id, car, setCarHasChanged, carHasChanged, closeCarDetails } = props;
 
-  const [marca, setMarca] = useState('');
-  const [modelo, setModelo] = useState('');
-  const [anio, setAnio] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [precio, setPrecio] = useState('');
-  const [foto, setFoto] = useState('');
+  const [marca, setMarca] = useState(''); //Valor del campo marca
+  const [modelo, setModelo] = useState(''); //Valor del campo modelo
+  const [anio, setAnio] = useState(''); //Valor del campo anio
+  const [descripcion, setDescripcion] = useState(''); //Valor del campo descripcion
+  const [precio, setPrecio] = useState(''); //Valor del campo precio
+  const [foto, setFoto] = useState(''); //Valor del campo foto
 
+  //Manejadores para agregar valores proveniente de los inputs
   const handlerOnChangedMarca = (e) => setMarca(e.target.value);
   const handlerOnChangedModelo = (e) => setModelo(e.target.value);
   const handlerOnChangedAnio = (e) => setAnio(e.target.value);
@@ -19,8 +20,9 @@ export default function EditCarDetailsComponent(props) {
   const handlerOnChangedPrecio = (e) => setPrecio(e.target.value);
   const handlerOnChangedFoto = (e) => setFoto(e.target.value);
 
+  //Guardamos los valores del coche
   const saveCar = async () => {
-    await updateCar(id, JSON.stringify({ marca, modelo, anio, descripcion, precio, foto }));
+    await updateCar(id, JSON.stringify({ marca, modelo, anio, descripcion, precio, foto })); //Convertimos en JSON los valores antes de enviarlos
     setCarHasChanged(!carHasChanged);
     closeCarDetails();
   };

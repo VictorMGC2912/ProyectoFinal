@@ -6,28 +6,32 @@ import styles from '@/styles/UserDetailsComponent.module.css';
 export default function UserDetailsComponent(props) {
   const { id, closeUserUpdating, setUserHasChanged, userHasChanged } = props;
 
-  const [user, setUser] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null); //Estado inicial de user
+  const [isEditing, setIsEditing] = useState(false); //COntrola si el usuario esta en modo edicion
+  const [loading, setLoading] = useState(false);//Estado para manejar la carga de datos
 
+  //Hook para la carga de datos del usuario
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
-        setLoading(true);
-        const userAux = await getUser(id);
+        setLoading(true); //Cambiamos a true el indicador de carga
+        const userAux = await getUser(id); //Llama a la API para cargar los datos del usuario por su ID
         setUser(userAux.data);
       } catch (error) {
         console.error("Error al cargar los detalles del usuario:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); //Desactiva el indicador de cargando
       }
     };
     loadUserProfile();
-  }, [id]);
+  }, [id]); //Se ejecuta cada vez que le pasamos el ID del usuario
 
+  //Inicial el proceso de edicion
   const initUpdateProcessUser = () => setIsEditing(true);
+  //Desactiva el proceso de edicion
   const exitUpdateProcessUser = () => setIsEditing(false);
 
+  //Muestro mensaje de carga mientras se obtiene los datos del usuario
   if (loading) {
     return <p className={styles.loadingText}>Cargando datos del usuario...</p>;
   }
@@ -35,7 +39,7 @@ export default function UserDetailsComponent(props) {
   return (
     <div className={styles.userDetailsContainer}>
       {user ? (
-        isEditing ? (
+        isEditing ? ( //Muestra el componente de edicion si esta en modo edicion
           <EditUserDetailsComponent
             id={id}
             user={user}

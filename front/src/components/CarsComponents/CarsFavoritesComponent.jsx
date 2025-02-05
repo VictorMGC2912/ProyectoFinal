@@ -43,7 +43,7 @@ export default function CarsFavoritesComponent(carId, userId, token) {
           </li>
         ))}
       </ul>
-      {/* Ejemplo para añadir un coche */}
+      {/* Boton para añadir un coche */}
       <button onClick={() => handleAddFav(carId)}>
         Añadir Coche a Favoritos
       </button>

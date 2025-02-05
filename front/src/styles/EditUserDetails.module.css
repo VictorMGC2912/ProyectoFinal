@@ -22,18 +22,18 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra los elementos dentro del formulario */
+  align-items: center; 
   gap: 1rem;
 }
 
 .editUserForm input {
-  width: 90%; /* Reduce un poco el ancho para que no se vea pegado */
+  width: 90%; 
   padding: 0.8rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
   color: #333;
-  text-align: center; /* Centra el texto dentro del input */
+  text-align: center;
   outline: none;
   transition: border-color 0.3s ease;
 }

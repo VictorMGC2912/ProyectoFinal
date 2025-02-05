@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import styles from "@/styles/CreateUser.module.css";
 
 const CreateUserComponent = ({ onUserCreated }) => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+    const [name, setName] = useState(''); //Valor del nombre
+    const [email, setEmail] = useState(''); //Valor del email
+    const [password, setPassword] = useState(''); //Valor del password
+    const [errorMessage, setErrorMessage] = useState(''); //Posibles errores
+    const [successMessage, setSuccessMessage] = useState(''); //Mensaje de exito
 
     const handleCreateUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:9000/user/signup', {
+            const response = await fetch('http://localhost:9000/user/signup', { //Hacemos fetch a la funcion del back de darse de alta
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password }), //Convertimos los valores a JSON antes de enviarlos
             });
             const data = await response.json();
 
@@ -31,11 +31,11 @@ const CreateUserComponent = ({ onUserCreated }) => {
     };
 
     return (
-      <div className={styles['create-user-container']}>
-      <h2 className={styles['create-user-title']}>Crear Usuario</h2>
-      <form className={styles['create-user-form']} onSubmit={handleCreateUser}>
+      <div className={styles.createUserContainer}>
+      <h2 className={styles.createUserTitle}>Crear Usuario</h2>
+      <form className={styles.createUserForm} onSubmit={handleCreateUser}>
         {/* Campo para el nombre */}
-        <div className={styles['create-user-form-group']}>
+        <div className={styles.createUserFormGroup}>
           <label htmlFor="name">Nombre:</label>
           <input
             type="text"
@@ -47,7 +47,7 @@ const CreateUserComponent = ({ onUserCreated }) => {
           />
         </div>
         {/* Campo para el correo */}
-        <div className={styles['create-user-form-group']}>
+        <div className={styles.createUserFormGroup}>
           <label htmlFor="email">Correo Electrónico:</label>
           <input
             type="email"
@@ -59,7 +59,7 @@ const CreateUserComponent = ({ onUserCreated }) => {
           />
         </div>
         {/* Campo para la contraseña */}
-        <div className={styles['create-user-form-group']}>
+        <div className={styles.createUserFormGroup}>
           <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
@@ -71,10 +71,10 @@ const CreateUserComponent = ({ onUserCreated }) => {
           />
         </div>
         {/* Mensajes de error y éxito */}
-        {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
-        {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
         {/* Botón para crear usuario */}
-        <button type="submit" className={styles['create-user-button']}>
+        <button type="submit" className={styles.createUserButton}>
           Crear Usuario
         </button>
       </form>
